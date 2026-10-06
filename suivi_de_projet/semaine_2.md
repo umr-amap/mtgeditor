@@ -1,4 +1,4 @@
-# Suivi de projet semaine 2 (14/09/2026 à 19/09/2026)
+# Suivi de projet semaine 2 (14/09/2026 à 20/09/2026)
 
 ## Tâches réalisées 
 
@@ -6,3 +6,4 @@
 - Lecture de la documentation MTG
 - Lecture de la documentation et travail sur Julia
 - Travail sur la maquette de l'app
+- Diagramme de cas d'utilisation
