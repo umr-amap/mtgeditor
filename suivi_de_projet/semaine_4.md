@@ -2,6 +2,6 @@
 
 ## Tâches réalisées 
 
-- Choix des technologies et spécification
-- Docker compose pour automatisation des build d'images
+- Choix des technologies et spécifications
+- Docker compose pour l'automatisation des builds d'images
 - Figma pour la maquette et un prototype de l'application
