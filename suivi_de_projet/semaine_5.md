@@ -2,6 +2,7 @@
 
 ## Tâches réalisées 
 
+- Rules sur le git
 - Algorithmique de l'application
 - Figma pour la maquette et un prototype de l'application
 - Création du prototype du gantt
