@@ -6,3 +6,4 @@
 - Algorithmique de l'application
 - Figma pour la maquette et un prototype de l'application
 - Création du prototype du gantt
+- Création de la maquette flutter
