@@ -1,0 +1,88 @@
+name: Enforce Branch Naming (Auto-delete)
+
+permissions:
+  contents: write
+  issues: write
+
+on:
+  create: {}
+
+jobs:
+  validate-and-delete:
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'branch'
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name:   Extract branch name
+        id: branch
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+      
+      - name: Validate branch name
+        id: validate
+        run: |
+          BRANCH_NAME="${{ steps.branch.outputs.branch_name }}"
+          
+          # Branches autorisées (Git Flow)
+          if [[ $BRANCH_NAME =~ ^(feature|bugfix|hotfix|docs|release)/[a-z0-9_-]+$ ]] || \
+             [[ $BRANCH_NAME == "develop" ]] || \
+             [[ $BRANCH_NAME == "main" ]] || \
+             [[ $BRANCH_NAME == "master" ]]; then
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "+ Branch '$BRANCH_NAME' is valid"
+          else
+            echo "valid=false" >> $GITHUB_OUTPUT
+            echo "- Branch '$BRANCH_NAME' is invalid"
+          fi
+      
+      - name: Delete invalid branch
+        if: steps.validate.outputs.valid == 'false'
+        run: |
+          BRANCH_NAME="${{ steps.branch.outputs.branch_name }}"
+          
+          echo "*** Deleting invalid branch: $BRANCH_NAME"
+          
+          gh api \
+            --method DELETE \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${{ github.repository }}/git/refs/heads/$BRANCH_NAME
+          
+          echo "+ Branch deleted successfully"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create issue to notify user
+        if: steps.validate.outputs.valid == 'false'
+        run: |
+          BRANCH_NAME="${{ steps.branch.outputs.branch_name }}"
+          USER="${{ github.actor }}"
+          
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${{ github.repository }}/issues \
+            -f title="⚠️ Invalid branch name:  $BRANCH_NAME" \
+            -f body="**@$USER** a tenté de créer une branche invalide :  \`$BRANCH_NAME\`
+
+          - **Cette branche a été automatiquement supprimée.**
+
+          ## Conventions Git Flow à respecter :
+          - \`feature/description\`
+          - \`bugfix/description\`
+          - \`hotfix/description\`
+          - \`docs/description\`
+          - \`release/version\`
+          - \`develop\`
+          - \`main\`
+
+          Utilise uniquement des lettres minuscules, chiffres, tirets et underscores. 
+
+          Exemple : \`feature/add-login-system\`"
+      
+        env: 
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
