@@ -1,0 +1,46 @@
+# --- Fichiers système & IDE ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --- Dépendances & Outils Dart / Flutter ---
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Packages pubspec.lock :
+# Recommandation officielle Dart :
+# - On ignore le lockfile des bibliothèques/paquets purs
+packages/**/pubspec.lock
+# - On conserve généralement celui de l'application (apps/mtg_editor/pubspec.lock) pour garantir des builds reproductibles
+
+# --- Spécifique Android ---
+apps/mtg_editor/android/.gradle/
+apps/mtg_editor/android/local.properties
+apps/mtg_editor/android/**/build/
+apps/mtg_editor/android/app/build/
+*.keystore
+*.jks
+
+# --- Spécifique iOS / macOS ---
+apps/mtg_editor/ios/Pods/
+apps/mtg_editor/ios/.symlinks/
+apps/mtg_editor/ios/Flutter/Flutter.framework
+apps/mtg_editor/ios/Flutter/Flutter.podspec
+apps/mtg_editor/ios/Flutter/Generated.xcconfig
+apps/mtg_editor/ios/Flutter/app.framework
+apps/mtg_editor/ios/**/xcuserdata/
+apps/mtg_editor/ios/**/DerivedData/
+apps/mtg_editor/ios/*.xcworkspace
+!apps/mtg_editor/ios/Runner.xcworkspace
+
+# --- Fichiers temporaires de tests ---
+coverage/
+*.lock
