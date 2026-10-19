@@ -7,3 +7,8 @@
 - Lecture approfondit du format MTG, fichier texte de ce qu'on à compris pour les futures traitement avec flutter
 - Modification du Git
 - Arborescence de l'application en flutter
+- Initialisation du backend en dart
+- Initialisation du frontend en flutter
+- Diagramme de classe pour le backend
+- Début de la base de l'application mobile
+- Fichier de préparation pour la visio demain
