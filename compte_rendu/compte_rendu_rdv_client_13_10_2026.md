@@ -10,7 +10,7 @@ De plus, on ne retrouve qu'un résumé des échanges et non pas toute la retrans
 ## Présentation de la maquette
 > Dans cette partie nous avons présenté l'intégralité de la maquette à travers un exemple interactif fourni par Figma. Le client nous a apporté des éléments afin d'améliorer la maquette et notre compréhension du format au passage.
 
-> - Pour la page détail d'une plante, il faut ajouter l'import au format MTG 
+> - Pour la page détail d'une plante, il faut ajouter l'export au format MTG 
 > - Pour plus tard, essayer de retravailler le côté topologique du graph car il y a plusieurs échelles à respecter.
 > - Quand on crée une plante, l'utilisateur doit créer en premier l'entête du fichier MTG
 > - Les champs de propriétés sont présents sur chaque noeud, et en fonction de l'axe dans lequel il se trouve
