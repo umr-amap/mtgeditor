@@ -1,0 +1,39 @@
+Différentes échelles de topologie : Ca veut dire qu’on peut regarder la plante dans son ensemble ou seulement une partie.
+comme un zoom sur la plante:
+
+plante (le plus haut)
+axe (axe, branches, sous-branche)
+unité de croissance (très précis, feuille, organe)
+
+
+exemple de code 
+
+CODE      RELATION    EXPLICATION
+--------------------------------------------------------------------------
+P1                        <- Échelle Plante : C'est l'arbre entier.
+    /A1                   <- Échelle Axe : L'axe principal (le tronc), contenu dans P1.
+        /U1               <- Échelle Entre-nœud : Le premier entre-nœud, au bas de A1.
+        <U2              <- Échelle Entre-nœud : Le 2ème entre-nœud, qui SUIT U1 sur le tronc.
+    +A2                  <- Échelle Axe : Une branche latérale, BRANCHÉE sur l'axe A1.
+        /U1               <- Échelle Entre-nœud : Le 1er entre-nœud de cette nouvelle branche A2.
+        <U2              <- Échelle Entre-nœud : Le 2ème entre-nœud de la branche A2.
+
+
+Chaque élément dans la colonne code est appelé un Composant.
+Dans un composant on retrouve:
+La lettre (P, A, U) qui détermine l'échelle du composant
+Un nombre, tout simplement le numéro du composant à cette échelle  
+Les règles des lettres et des numéros sont modifiables dans l'en-tête via l’attribut CODE (ou ENTITY), mais il faut essayer de respecter les conventions.
+Si le composant est indenté par rapport à celui d’avant alors il est inclus dans le composant parent
+
+
+les symboles (connexions):
+Le symbole slash / signifie est contenu dans:
+Quand vous lisez P1 puis en dessous /A1, le MTG comprend : "L'axe A1 appartient à la plante P1".
+
+Quand vous lisez /U1 juste sous un axe, cela veut dire : "L'entre-nœud U1 est le premier composant qui constitue cet axe".
+
+Le Chapeau ^ (Abstraction / Remontée) est l'exact inverse du slash. Il signifie "appartient à" ou "fait partie de" en remontant d'une échelle fine vers une échelle globale
+
+< s'utilise presque uniquement à l'échelle fine (<U2 suit U1).
++ s'utilise pour brancher un axe sur un autre, ramification (+A2 est une branche qui pousse sur le côté de l'axe A1).
