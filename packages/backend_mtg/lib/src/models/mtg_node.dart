@@ -1,5 +1,10 @@
+import './mtg_scale.dart' ;
+
 class MTGNode {
-  String? Composant;
-  var connexions = <String>{};
-  
+
+  MTGScale? scale;
+  String? connexion;
+  bool? accent_circonflexe;
+  MTGNode? parent;
+  List<MTGNode>? descendants;
 }
