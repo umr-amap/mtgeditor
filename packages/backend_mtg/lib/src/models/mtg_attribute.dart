@@ -1,8 +1,6 @@
-import 'dart:ffi';
-
 class MTGAttribute {
-    Float? diameter;
-    Float? height;
+    double? diameter;
+    double? height;
     int? age;
     bool? isAlive;
     String? label;
