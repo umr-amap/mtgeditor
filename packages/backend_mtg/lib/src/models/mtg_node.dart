@@ -1,4 +1,4 @@
-class MtgNode {
+class MTGNode {
   String? Composant;
   var connexions = <String>{};
   

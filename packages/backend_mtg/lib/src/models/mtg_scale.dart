@@ -1,3 +1,3 @@
-class MtgScale {
+class MTGScale {
     
 }
