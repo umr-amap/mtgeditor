@@ -1,3 +1,10 @@
-class MtgTree {
+import './mtg_node.dart' ;
+import './mtg_scale.dart' ;
+import './mtg_description.dart' ;
 
+class MTGTree {
+    List<MTGScale>? scales;
+    MTGNode? root;
+    List<MTGNode>? nodes;
+    List<MTGDescription>? descriptions;
 }
