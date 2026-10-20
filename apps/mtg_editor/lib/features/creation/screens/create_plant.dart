@@ -57,9 +57,9 @@ class _TabBarExampleState extends State<TabBarExample>
       body: TabBarView(
         controller: _tabController,
         children: const <Widget>[
-          Center(child: Text("")),
-          Center(child: Text("")),
-          Center(child: Text("")),
+          TemplateView(),
+          ProprietesView(),
+          TopologieView(),
         ],
       ),
     );
