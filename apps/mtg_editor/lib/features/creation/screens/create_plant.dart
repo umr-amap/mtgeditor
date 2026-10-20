@@ -1,15 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
-/// Flutter code sample for [TabBar].
+import '../widgets/template.dart';
 
-void main() => runApp(const TabBarApp());
+void main() => runApp(const PlantCreateApp());
 
-class TabBarApp extends StatelessWidget {
-  const TabBarApp({super.key});
+class PlantCreateApp extends StatelessWidget {
+  const PlantCreateApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: TabBarExample());
+    return const MaterialApp(
+      home: TabBarExample(),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }
 
@@ -17,76 +20,79 @@ class TabBarExample extends StatefulWidget {
   const TabBarExample({super.key});
 
   @override
-  State<TabBarExample> createState() => _TabBarExampleState();
+  State<TabBarExample> createState() => _TabBarState();
 }
 
 /// [AnimationController]s can be created with `vsync: this` because of
 /// [TickerProviderStateMixin].
-class _TabBarExampleState extends State<TabBarExample>
-    with TickerProviderStateMixin {
-  late final TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+class _TabBarState extends State<TabBarExample> {
+  int _selectedTab = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.arrow_back),
-        actions: [Padding(padding: EdgeInsetsGeometry.directional(end:25.0), child: const Icon(Icons.close,))],
+        actions: [
+          Padding(
+            padding: const EdgeInsetsDirectional.only(end: 25.0),
+            child: const Icon(Icons.close),
+          ),
+        ],
       ),
-      body: Column(children: [
-        Row(children: [
-          Column(children: [
-            Text('Templates'),
-            InkWell(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 5.0, color: Colors.white),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Row(
+              children: [
+                _buildTab(label: 'Templates', index: 0),
+                _buildTab(label: 'Propriétés', index: 1),
+                _buildTab(label: 'Topologie', index: 2),
+              ],
+            ),
+          ),
+          Expanded(child: ListView(children: const [TemplateView()])),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTab({required String label, required int index}) {
+    final isSelected = _selectedTab == index;
+    final isActive = index <= _selectedTab;
+    final color = isActive ? const Color(0xFF9B75B5) : Colors.grey.shade300;
+
+    return Expanded(
+      child: InkWell(
+        onTap: () => setState(() => _selectedTab = index),
+        borderRadius: BorderRadius.circular(8.0),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? const Color(0xFF8D5DAF) : Colors.grey,
                 ),
-                child: Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: Container(
-                    width: 40.0,
-                    height: 40.0,
-                    child: Container(
-                      decoration: new BoxDecoration(
-                        color: Colors.red,
-                        shape:
-                        BoxShape.rectangle,
-                        borderRadius: BorderRadius.all(Radius.circular(8.0))
-                      ),
-                    ),
+              ),
+              const SizedBox(height: 6.0),
+              SizedBox(
+                height: 8.0,
+                width: double.infinity,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
           ),
-        ],
         ),
-        ListView(
-          controller: _tabController,
-          children: const <Widget>[
-            TemplateView(),
-            ProprietesView(),
-            TopologieView(),
-          ],
-        ),
-      ],)
+      ),
     );
   }
 }
