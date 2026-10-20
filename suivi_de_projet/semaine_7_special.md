@@ -12,3 +12,9 @@
 - Diagramme de classe pour le backend
 - Début de la base de l'application mobile
 - Fichier de préparation pour la visio demain
+
+## MARDI
+- Travail sur la maquette
+- Travail sur la partie frontend de l'application
+- Travail sur la partie backend de l'app (modele)
+- Réunion avec le client(voir compte rendu_rdv_client_20_10_2026.md)
