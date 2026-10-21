@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mtg_editor/features/liste_plantes/screens/list_plantes_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         // state is not lost during the reload. To reset the state, use hot
         // restart instead.
         //
-        // This works for code too, not just values: Most code changes can be
+        // This works for code too, not just values: Most code changes can becx‹d   brer
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
