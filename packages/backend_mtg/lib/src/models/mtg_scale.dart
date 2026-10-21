@@ -1,7 +1,7 @@
-import 'mtg_attribut.dart'
+import './mtg_attribute.dart';
 
 class MTGScale {
     int? echelle;
     String? symbol;
-    List<MTGAttribut>? attributs;
+    List<MTGAttribute>? attributes;
 }
