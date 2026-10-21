@@ -8,12 +8,13 @@ class MTGNode {
   MTGNode? _parent;
   List<MTGNode>? _descendants;
 
-  MTGNode({String? id, MTGScale? scale, String? connexion, MTGNode? parent, List<MTGNode>? descendants})
-      : this._id = id,
-        this._scale = scale,
-        this._connexion = connexion,
-        this._parent = parent,
-        this._descendants = descendants;
+  MTGNode({String? id, MTGScale? scale, String? connexion, MTGNode? parent, List<MTGNode>? descendants}){
+    this._id = id;
+    this._scale = scale;
+    this._connexion = connexion;
+    this._parent = parent;
+    this._descendants = descendants;
+  }
 
   String? getId() => this._id;
   setId(String? value) => this._id = value;

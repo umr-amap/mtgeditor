@@ -4,7 +4,10 @@ class MTGAttribute {
   String? name;
   MTGAttributeType? type;
 
-  MTGAttribute({required this.name, required this.type});
+  MTGAttribute({String? name, MTGAttributeType? type}) {
+    this.name = name;
+    this.type = type;
+  }
 
   String? getName() => this.name;
   setName(String? value) => this.name = value;
