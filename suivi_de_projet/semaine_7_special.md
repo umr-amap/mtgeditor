@@ -18,3 +18,19 @@
 - Travail sur la partie frontend de l'application
 - Travail sur la partie backend de l'app (modele)
 - Réunion avec le client(voir compte rendu_rdv_client_20_10_2026.md)
+
+## MERCREDI
+- Suite à la réunion
+    - Changement du modèle 
+    - Changement de la maquette
+
+- Avancement du front:
+    - page liste plante avec recherche, 
+    - page template
+    - selection des 3 échelles
+    - Boutons sans redirection
+- Avancement du backend: 
+    - modèle avec getteur
+    - setteur
+    - constructeur 
+    - fonction de base    
