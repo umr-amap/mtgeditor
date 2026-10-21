@@ -40,4 +40,8 @@ class MTGNode {
     this._descendants!.add(descendant);
   }
 
+  void supDescendant(MTGNode desc){
+    this._descendants?.removeWhere((descendant) => descendant.getId() == desc.getId());
+  }
+
 }

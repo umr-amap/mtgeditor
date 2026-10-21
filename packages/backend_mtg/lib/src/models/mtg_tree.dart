@@ -26,4 +26,39 @@ class MTGTree {
 
   List<MTGDescription>? getDescriptions() => this._descriptions;
   setDescriptions(List<MTGDescription>? value) => this._descriptions = value;
+
+  addScale(MTGScale scale) {
+    this._scales ??= [];
+    this._scales!.add(scale);
+  }
+
+  void supScale(MTGScale scale) {
+    this._scales?.removeWhere((s) => s.getSymbol() == scale.getSymbol());
+  }
+
+  void addDescription(MTGDescription description) {
+    this._descriptions ??= [];
+    this._descriptions!.add(description);
+  }
+
+  void supDescription(MTGDescription description) {
+    this._descriptions?.removeWhere((d) => d.getOperation() == description.getOperation());
+  }
+
+  void addNode(MTGNode node) {
+    this._nodes ??= {};
+    this._nodes![node.getId()!] = node;
+  }
+
+  void supNode(MTGNode node) {
+    this._nodes?.remove(node.getId()!);
+  }
+
+  MTGNode? getNodeById(String id) {
+    return this._nodes?[id];
+  }
+
+  MTGNode? getNode(MTGNode node) {
+    return this._nodes?[node.getId()!];
+  }
 }
