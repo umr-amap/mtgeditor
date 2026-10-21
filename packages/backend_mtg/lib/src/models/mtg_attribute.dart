@@ -1,8 +1,14 @@
 enum MTGAttributeType { Bool, Int, Date, String }
 
 class MTGAttribute {
-  final String name;
-  final MTGAttributeType type;
+  String? name;
+  MTGAttributeType? type;
 
   MTGAttribute({required this.name, required this.type});
+
+  String? getName() => this.name;
+  setName(String? value) => this.name = value;
+
+  MTGAttributeType? getType() => this.type;
+  setType(MTGAttributeType? value) => this.type = value;
 }
