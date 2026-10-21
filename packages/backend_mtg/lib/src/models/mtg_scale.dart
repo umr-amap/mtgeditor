@@ -20,12 +20,12 @@ class MTGScale {
     List<MTGAttribute>? getAttributes() => this._attributes;
     setAttributes(List<MTGAttribute>? value) => this._attributes = value;
 
-    void addAttribute(String name, MTGAttributeType type) {
+    void addAttribute(MTGAttribute attribute) {
         this._attributes ??= [];
-        this._attributes!.add(MTGAttribute(name: name, type: type));
+        this._attributes!.add(attribute);
     }
 
-    void supAttribute(String name) {
-        this._attributes?.removeWhere((attribute) => attribute.getName() == name);
+    void supAttribute(MTGAttribute attribute) {
+        this._attributes?.removeWhere((a) => a.getName() == attribute.getName());
     }
 }
