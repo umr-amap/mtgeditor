@@ -5,6 +5,6 @@ import './mtg_description.dart' ;
 class MTGTree {
     List<MTGScale>? scales;
     MTGNode? root;
-    List<MTGNode>? nodes;
+    Map<String, MTGNode>? nodes;
     List<MTGDescription>? descriptions;
 }
