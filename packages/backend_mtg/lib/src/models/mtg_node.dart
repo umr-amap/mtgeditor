@@ -2,9 +2,9 @@ import './mtg_scale.dart' ;
 
 class MTGNode {
 
+  String? id;
   MTGScale? scale;
   String? connexion;
-  bool? accent_circonflexe;
   MTGNode? parent;
   List<MTGNode>? descendants;
 }
