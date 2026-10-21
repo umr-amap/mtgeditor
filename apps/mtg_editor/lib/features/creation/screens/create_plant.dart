@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../widgets/template.dart';
+import '../widgets/propriete.dart';
 
 void main() => runApp(const PlantCreateApp());
 
@@ -32,11 +33,11 @@ class _TabBarState extends State<TabBarExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.arrow_back),
+        leading: const Icon(Icons.arrow_back), // TODO: Faire le onTap retour
         actions: [
           Padding(
             padding: const EdgeInsetsDirectional.only(end: 25.0),
-            child: const Icon(Icons.close),
+            child: const Icon(Icons.close), // TODO: Faire le onTap close
           ),
         ],
       ),
@@ -52,7 +53,8 @@ class _TabBarState extends State<TabBarExample> {
               ],
             ),
           ),
-          Expanded(child: ListView(children: const [TemplateView()])),
+          const SizedBox(height: 8.0,),
+          const Expanded(child: ProprieteView()),
         ],
       ),
     );
