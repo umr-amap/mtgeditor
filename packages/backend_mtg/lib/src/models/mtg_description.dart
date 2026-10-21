@@ -24,4 +24,22 @@ class MTGDescription {
 
   int? getLimite() => this._limite;
   setLimite(int? value) => this._limite = value;
+
+  addParent(MTGScale parent) {
+    this._parents ??= [];
+    this._parents!.add(parent);
+  }
+
+  supParent(MTGScale parent) {
+    this._parents?.removeWhere((p) => p.getSymbol() == parent.getSymbol());
+  }
+
+  addEnfant(MTGScale enfant) {
+    this._enfants ??= [];
+    this._enfants!.add(enfant);
+  }
+
+  supEnfant(MTGScale enfant) {
+    this._enfants?.removeWhere((e) => e.getSymbol() == enfant.getSymbol());
+  }
 }
