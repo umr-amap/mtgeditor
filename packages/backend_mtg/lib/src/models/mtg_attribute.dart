@@ -1,7 +1,8 @@
+enum MTGAttributeType { Bool, Int, Date, String }
+
 class MTGAttribute {
-    double? diameter;
-    double? height;
-    int? age;
-    bool? isAlive;
-    String? label;
+  final String name;
+  final MTGAttributeType type;
+
+  MTGAttribute({required this.name, required this.type});
 }
