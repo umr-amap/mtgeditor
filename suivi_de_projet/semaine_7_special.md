@@ -34,3 +34,14 @@
     - setteur
     - constructeur 
     - fonction de base    
+
+## JEUDI
+
+- Backend
+    - Test sur le modele
+    - Coverage
+    - Parseur fait
+
+- avancement sur le front
+- Ajout dans le readme
+- Travail sur le diagramme UML du modele

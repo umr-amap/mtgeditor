@@ -1,0 +1,12 @@
+packages/backend_mtg/pubspec.lock
+packages/backend_mtg/.dart_tool/package_config.json
+packages/backend_mtg/.dart_tool/package_graph.json
+packages/backend_mtg/.dart_tool/extension_discovery/vs_code.json
+packages/backend_mtg/.dart_tool/pub/bin/test/test.dart-3.13.5.snapshot
+packages/backend_mtg/.dart_tool/test/incremental_kernel.Ly9AZGFydD0zLjA=
+packages/backend_mtg/coverage/lcov.info
+packages/backend_mtg/coverage/test/models/test_mtg_description_test.dart.vm.json
+packages/backend_mtg/coverage/test/models/test_mtg_node_test.dart.vm.json
+packages/backend_mtg/coverage/test/models/test_mtg_scale_test.dart.vm.json
+packages/backend_mtg/coverage/test/models/test_mtg_tree_test.dart.vm.json
+packages/backend_mtg/coverage/test/models/test_mtgattribute_test.dart.vm.json
