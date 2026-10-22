@@ -1,4 +1,4 @@
-import '../lib/src/parser/mtg_file_reader.dart';
+import '../../lib/src/parser/mtg_file_reader.dart';
 
 void main() {
   testParser()async{
