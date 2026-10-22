@@ -1,64 +1,73 @@
 class MTGParser {
-  List<String>? lines;
-  String type;
+  List<String> lines;
   int index=0;
   MTGParser({
     required this.lines,
-    required this.type,
   });
 
   Map<int,dynamic> classes={};
   Map<int,dynamic> descriptions={};
   Map<int,dynamic> features={};
-  Map<int,dynamic> mtg;
-  Map<String, dynamic> parseMtgFile() {
-    while (index < lines.length) {
-      String currentLine = lines[index].trim();
-
-      // Ignorer les lignes vides ou sans section reconnue.
-      if (!isSection(currentLine)) {
-        index++;
-        continue;
-      }
-      if(isSection(currentLine,"CODE")){
-          String code=currentLine.replaceFirst(
-            RegExp(r'^CODE[ \t]*:[ \t]*'),
-              '').trim();
-        index++;
-        continue;
-      };
-      if(isSection(currentLine,"CLASSES")){
-          classes=parseSection(["SYMBOL", "SCALE", "DECOMPOSITION", "INDEXATION", "DEFINITION"],index,"CLASSES");
-          continue;
-      };
-      if (isSection(currentLine, 'FEATURES')) {
-        features = parseSection(["NAME", "TYPE"],index,'FEATURES');
-        continue;
-      }
-      if (isSection(currentLine, 'DESCRIPTION')) {
-        descriptions = parseSection(["LEFT", "RIGHT"],index,'DESCRIPTION');
-      }
-      if (isSection(currentLine, 'MTG')) {
-        mtg = parseMtg(classes, features, type);
-        continue;
-      }
+  Map<int,dynamic> mtg={};
+Map<String, dynamic> parseMtgFile() {
+  while (index < lines.length) {
+    String currentLine = lines[index].trim();
+    
+    // CORRECTION : Utiliser isAnySection au lieu de isSection sans paramètre
+    if (!isAnySection(currentLine)) {
+      index++;
+      continue;
     }
-    return {
-      'mtg': mtg,
-      'classes': classes,
-      'description': descriptions,
-      'features': features,
-    };
+    
+    if (isSection(currentLine, "CLASSES")) {
+      final (parsedClasses, nextIndex) = parseSection(
+        ["SYMBOL", "SCALE", "DECOMPOSITION", "INDEXATION", "DEFINITION"],
+        index,
+        "CLASSES",
+      );
+
+      classes = parsedClasses;
+      index = nextIndex;
+      continue;
+    }
+    
+    if (isSection(currentLine, 'FEATURES')) {
+      final (parsedFeatures, nextIndex) = parseSection(
+        ["NAME", "TYPE"],
+        index,
+        "FEATURES",
+      );
+
+      features = parsedFeatures;
+      index = nextIndex;
+      continue;
+    }
+    
+    if (isSection(currentLine, 'DESCRIPTION')) {
+      final (parsedDescription, nextIndex) = parseSection(["LEFT", "RIGHT","RELTYPE","MAX"], index, 'DESCRIPTION');
+      descriptions = parsedDescription;
+      index = nextIndex; 
+      continue; 
+    }
+    
+    if (isSection(currentLine, 'MTG')) {
+      final (mtgParsed, nextIndex) = parseMtg(index);
+      mtg = mtgParsed;
+      index = nextIndex;
+      continue;
+    }
+    
+    // Sécurité supplémentaire si une section reconnue par isAnySection n'est pas gérée explicitement
+    index++;
   }
-  Map<int,dynamic> parseMtg(
-    Map<int, dynamic>? classes,
-    Map<int, dynamic>? features,
-    String mtgType,
-  ) {
-    Map<int,dynamic> result={};
-    final symbols = classes!.values.map((row) => (row as Map<String, String>)['SYMBOL']!).toList();
-    return result;
-  }
+  
+  return {
+    'mtg': mtg,
+    'classes': classes,
+    'description': descriptions,
+    'features': features,
+  };
+}
   bool isSection(String line, [String? section]) {
     if (section != null) {
       switch (section) {
@@ -89,14 +98,12 @@ class MTGParser {
     const sections = ['CODE', 'CLASSES', 'DESCRIPTION', 'FEATURES', 'MTG'];
     return sections.any((section) => isSection(line.trim(), section));
   }
-Map<int, Map<String, String>> parseSection(
+(Map<int, Map<String, String>>,int) parseSection(
   List<String> header,
   int index,
   [String? section]
 ) {
-  if (index >= lines.length ||
-      lines[index].isEmpty ||
-      lines[index] != section) {
+  if (index >= lines.length && !isAnySection(lines[index])) {
     throw FormatException('No value or section is not the good one');
   }
 
@@ -138,6 +145,46 @@ Map<int, Map<String, String>> parseSection(
     index++;
   }
 
-  return lignes;
+  return (lignes,index);
+}
+(Map<int, Map<String, String?>>, int) parseMtg(int index) {
+  final result = <int, Map<String, String?>>{};
+
+  // L'en-tête se trouve juste après la ligne "MTG:"
+  final headers = lines[index + 1].split('\t');
+  index += 2; // passer "MTG:" et l'en-tête
+
+  var rowNumber = 1;
+
+  while (index < lines.length &&
+      lines[index].trim().isNotEmpty &&
+      !isAnySection(lines[index].trim())) {
+    final values = lines[index].split('\t');
+
+    if (values.length > headers.length) {
+      throw const FormatException(
+        'Une ligne MTG contient plus de colonnes que son en-tête',
+      );
+    }
+
+    final row = <String, String?>{};
+
+    for (var column = 0; column < headers.length; column++) {
+      final name = headers[column].trim();
+
+      // La colonne vide de l'en-tête correspond au séparateur MTG,
+      // pas à une feature.
+      if (name.isEmpty) continue;
+
+      final value = column < values.length ? values[column].trim() : '';
+      row[name] = value.isEmpty ? null : value;
+    }
+
+    result[rowNumber] = row;
+    rowNumber++;
+    index++;
+  }
+
+  return (result, index);
 }
 }
