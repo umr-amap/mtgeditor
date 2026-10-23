@@ -35,9 +35,14 @@ class MTGNode {
   
   bool isLeaf() => this._descendants == null || this._descendants!.isEmpty;
  
-  void addDescendant(MTGNode descendant) {
+  void addDescendant(MTGNode descendant, {String? connexion}) {
     this._descendants ??= [];
     this._descendants!.add(descendant);
+
+    descendant.setParent(this);
+    if(connexion != null){
+      descendant.setConnexion(connexion);
+    }
   }
 
   void supDescendant(MTGNode desc){
