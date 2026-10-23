@@ -42,16 +42,67 @@ class MTGTree {
   }
 
   void supDescription(MTGDescription description) {
-    this._descriptions?.removeWhere((d) => d.getOperation() == description.getOperation());
+    _descriptions?.removeWhere((d) {
+      if (d.getOperation() != description.getOperation()) return false;
+
+      final parentsD = d.getParents()?.map((p) => p.getSymbol()).toSet() ?? {};
+      final parentsCible = description.getParents()?.map((p) => p.getSymbol()).toSet() ?? {};
+      if (!parentsD.containsAll(parentsCible) || parentsD.length != parentsCible.length) return false;
+
+      final enfantsD = d.getEnfants()?.map((e) => e.getSymbol()).toSet() ?? {};
+      final enfantsCible = description.getEnfants()?.map((e) => e.getSymbol()).toSet() ?? {};
+      return enfantsD.containsAll(enfantsCible) && enfantsD.length == enfantsCible.length;
+    });
   }
 
   void addNode(MTGNode node) {
-    this._nodes ??= {};
-    this._nodes![node.getId()!] = node;
+    final id = node.getId();
+    if (id != null) {
+      this._nodes ??= {};
+      this._nodes![id] = node;
+    }
+  }
+
+  void attachNode({
+    required MTGNode node,
+    MTGNode? parent,
+    String? connexion,
+  }) {
+    if (parent != null) {
+      parent.addDescendant(node, connexion: connexion);
+    } else if (_root == null) {
+      _root = node;
+    }
+
+    addNode(node);
   }
 
   void supNode(MTGNode node) {
-    this._nodes?.remove(node.getId()!);
+    // 1. Suppression récursive de tous les descendants (coupe de la branche)
+    final descendants = List<MTGNode>.from(node.getDescendants() ?? []);
+    for (final enfant in descendants) {
+      supNode(enfant);
+    }
+
+    // 2. Nettoyage de la référence chez le parent
+    node.getParent()?.supDescendant(node);
+
+    // 3. Réinitialisation de la racine si le nœud supprimé était la base
+    if (_root?.getId() == node.getId()) {
+      _root = null;
+    }
+
+    // 4. Retrait de l'index global
+    if (node.getId() != null) {
+      _nodes?.remove(node.getId());
+    }
+  }
+
+  void supNodeById(String id) {
+    final node = getNodeById(id);
+    if (node != null) {
+      supNode(node);
+    }
   }
 
   MTGNode? getNodeById(String id) {
