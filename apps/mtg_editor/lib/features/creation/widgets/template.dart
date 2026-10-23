@@ -2,7 +2,9 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:material_ui/material_ui.dart';
 
 class TemplateView extends StatefulWidget {
-  const TemplateView({super.key});
+  final VoidCallback onContinue;
+
+  const TemplateView({super.key, required this.onContinue});
 
   @override
   State<TemplateView> createState() => _MyFormState();
@@ -18,6 +20,7 @@ class _MyFormState extends State<TemplateView> {
     }
 
     debugPrint('Échelle de la plante: ${formState.value['typeEchelle']}');
+    widget.onContinue();
   }
 
   @override

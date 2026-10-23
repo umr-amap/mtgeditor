@@ -29,15 +29,42 @@ class TabBarExample extends StatefulWidget {
 class _TabBarState extends State<TabBarExample> {
   int _selectedTab = 0;
 
+  void _goToNextTab() {
+    if (_selectedTab < 2) {
+      setState(() {
+        _selectedTab++;
+      });
+    }
+  }
+
+  void _goToPreviousTab() {
+    if (_selectedTab > 0) {
+      setState(() {
+        _selectedTab--;
+      });
+      return;
+    }
+
+    Navigator.of(context).maybePop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.arrow_back), // TODO: Faire le onTap retour
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: _goToPreviousTab,
+        ),
         actions: [
           Padding(
             padding: const EdgeInsetsDirectional.only(end: 25.0),
-            child: const Icon(Icons.close), // TODO: Faire le onTap close
+            child: IconButton(
+              onPressed: () {
+                // TODO : Retourner sur l'ancienne page
+              },
+              icon: const Icon(Icons.close),
+            ), // TODO: Faire le onTap close
           ),
         ],
       ),
@@ -53,8 +80,19 @@ class _TabBarState extends State<TabBarExample> {
               ],
             ),
           ),
-          const SizedBox(height: 8.0,),
-          const Expanded(child: ProprieteView()),
+          const SizedBox(height: 8.0),
+          Expanded(
+            child: IndexedStack(
+              index: _selectedTab,
+              children: [
+                TemplateView(onContinue: _goToNextTab),
+                ProprieteView(onContinue: _goToNextTab),
+                Center(
+                  child: Text('La topologie sera disponible prochainement.'),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
