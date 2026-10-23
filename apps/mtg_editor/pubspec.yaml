@@ -36,9 +36,13 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flutter_form_builder: ^11.0.0
+  material_ui: ^1.7.0
+  flutter_map: ^8.3.2
+  latlong2: ^0.9.1
+  image_picker: ^1.2.4
   flutter_svg: ^2.3.0
   material_symbols_icons: ^4.2960.0
-  flutter_form_builder: ^11.0.0
   material_ui: ^1.8.0
 
 dev_dependencies:
