@@ -1,4 +1,4 @@
-enum MTGAttributeType { Bool, Int, Date, String }
+enum MTGAttributeType { Bool, Int, Date, String, double }
 
 class MTGAttribute {
   String? name;
