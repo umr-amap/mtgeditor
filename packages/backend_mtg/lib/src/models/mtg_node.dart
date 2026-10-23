@@ -1,4 +1,5 @@
 import './mtg_scale.dart' ;
+import './mtg_attribute.dart';
 
 class MTGNode {
 
@@ -7,13 +8,14 @@ class MTGNode {
   String? _connexion;
   MTGNode? _parent;
   List<MTGNode>? _descendants;
-
-  MTGNode({String? id, MTGScale? scale, String? connexion, MTGNode? parent, List<MTGNode>? descendants}){
+  Map<MTGAttribute,dynamic>? _attributes;
+  MTGNode({String? id, MTGScale? scale, String? connexion, MTGNode? parent, List<MTGNode>? descendants, Map<MTGAttribute,dynamic>? attributes}){
     this._id = id;
     this._scale = scale;
     this._connexion = connexion;
     this._parent = parent;
     this._descendants = descendants;
+    this._attributes = attributes;
   }
 
   String? getId() => this._id;
@@ -42,6 +44,24 @@ class MTGNode {
 
   void supDescendant(MTGNode desc){
     this._descendants?.removeWhere((descendant) => descendant.getId() == desc.getId());
+  }
+
+  Map<MTGAttribute,dynamic>? getAttributes() => this._attributes;
+  setAttributes(Map<MTGAttribute,dynamic>? value) => this._attributes?.addAll(value!);
+
+  void addAttribute(MTGAttribute attribute) {
+      this._attributes?[attribute]=null;
+  }
+
+  void addvalue(MTGAttribute attribute,dynamic value){
+    if(attribute.type!=value.runtimeType){
+      throw FormatException("pas le bon type de valeur");
+    }else{
+      this._attributes?[attribute]=value;
+    }
+  }
+  void supAttribute(MTGAttribute attribute) {
+      this._attributes?.remove(attribute);
   }
 
 }
