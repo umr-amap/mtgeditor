@@ -54,20 +54,41 @@ void main() {
       expect(tree.getScales()!.map((item) => item.getSymbol()), ['B']);
     });
 
-    test('adds and removes descriptions by operation', () {
+    test('adds and removes matching descriptions', () {
       final tree = MTGTree();
-      final description = MTGDescription(operation: 'branching');
+      final parent = MTGScale(symbol: 'P');
+      final child = MTGScale(symbol: 'C');
+      final description = MTGDescription(
+        parents: [parent],
+        enfants: [child],
+        operation: 'branching',
+      );
       tree.addDescription(description);
 
       expect(tree.getDescriptions(), [description]);
 
-      tree.addDescription(MTGDescription(operation: 'branching'));
-      tree.addDescription(MTGDescription(operation: 'successor'));
-      tree.supDescription(description);
+      final duplicate = MTGDescription(
+        parents: [MTGScale(symbol: 'P')],
+        enfants: [MTGScale(symbol: 'C')],
+        operation: 'branching',
+      );
+      final differentParent = MTGDescription(
+        parents: [MTGScale(symbol: 'Q')],
+        enfants: [child],
+        operation: 'branching',
+      );
+      final differentOperation = MTGDescription(
+        parents: [parent],
+        enfants: [child],
+        operation: 'successor',
+      );
+      tree
+        ..addDescription(duplicate)
+        ..addDescription(differentParent)
+        ..addDescription(differentOperation)
+        ..supDescription(description);
 
-      expect(tree.getDescriptions()!.map((item) => item.getOperation()), [
-        'successor',
-      ]);
+      expect(tree.getDescriptions(), [differentParent, differentOperation]);
     });
 
     test('indexes nodes by id and removes them by id', () {
@@ -93,6 +114,55 @@ void main() {
       expect(tree.getNode(MTGNode(id: 'missing')), isNull);
     });
 
+    test('attaches nodes to the root and their parent', () {
+      final tree = MTGTree();
+      final root = MTGNode(id: 'root');
+      final child = MTGNode(id: 'child');
+
+      tree.attachNode(node: root);
+      tree.attachNode(node: child, parent: root, connexion: '/');
+
+      expect(tree.getRoot(), same(root));
+      expect(tree.getNodeById('root'), same(root));
+      expect(tree.getNodeById('child'), same(child));
+      expect(root.getDescendants(), [child]);
+      expect(child.getParent(), same(root));
+      expect(child.getConnexion(), '/');
+    });
+
+    test('removes a node and its descendants by id', () {
+      final root = MTGNode(id: 'root');
+      final child = MTGNode(id: 'child');
+      final grandchild = MTGNode(id: 'grandchild');
+      final tree = MTGTree(root: root);
+      root.addDescendant(child);
+      child.addDescendant(grandchild);
+      tree
+        ..addNode(root)
+        ..addNode(child)
+        ..addNode(grandchild)
+        ..supNodeById('child');
+
+      expect(tree.getNodeById('root'), same(root));
+      expect(tree.getNodeById('child'), isNull);
+      expect(tree.getNodeById('grandchild'), isNull);
+      expect(root.getDescendants(), isEmpty);
+      expect(child.getDescendants(), isEmpty);
+    });
+
+    test('does not attach another root when one is already set', () {
+      final root = MTGNode(id: 'root');
+      final anotherRoot = MTGNode(id: 'another-root');
+      final tree = MTGTree();
+
+      tree
+        ..attachNode(node: root)
+        ..attachNode(node: anotherRoot);
+
+      expect(tree.getRoot(), same(root));
+      expect(tree.getNodeById('another-root'), same(anotherRoot));
+    });
+
     test('removing an item is safe when its collection is null', () {
       final tree = MTGTree();
 
@@ -105,6 +175,8 @@ void main() {
       expect(tree.getScales(), isNull);
       expect(tree.getDescriptions(), isNull);
       expect(tree.getNodes(), isNull);
+
+      expect(() => tree.supNodeById('missing'), returnsNormally);
     });
   });
 }
