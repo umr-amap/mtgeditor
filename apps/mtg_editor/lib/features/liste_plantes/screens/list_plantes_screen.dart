@@ -1,5 +1,5 @@
 import 'package:backend_mtg/backend_mtg.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:mtg_editor/features/liste_plantes/widgets/organic_card.dart';
 import 'package:mtg_editor/features/liste_plantes/widgets/plant_search_bar.dart';
@@ -54,7 +54,11 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
             label: 'Plantes',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline, size: 24, color: Color(0xFF1F1F1F)),
+            icon: Icon(
+              Icons.add_circle_outline,
+              size: 24,
+              color: Color(0xFF1F1F1F),
+            ),
             label: 'Création',
           ),
           BottomNavigationBarItem(
@@ -75,9 +79,7 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
             ),
             Expanded(
               child: filteredPlants.isEmpty
-                  ? const Center(
-                      child: Text('Aucune plante trouvée'),
-                    )
+                  ? const Center(child: Text('Aucune plante trouvée'))
                   : ListView.builder(
                       padding: const EdgeInsets.all(8),
                       itemCount: filteredPlants.length,
@@ -92,5 +94,3 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
     );
   }
 }
-
-

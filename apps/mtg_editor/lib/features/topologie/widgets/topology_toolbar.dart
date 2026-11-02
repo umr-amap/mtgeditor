@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+
+class TopologyToolbar extends StatelessWidget {
+  final VoidCallback onAdd;
+  final VoidCallback onDelete;
+  final bool visible;
+
+  const TopologyToolbar({
+    super.key,
+    required this.onAdd,
+    required this.onDelete,
+    required this.visible,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (!visible) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FilledButton.icon(
+            onPressed: onAdd,
+            icon: const Icon(Icons.add),
+            label: const Text('Ajouter'),
+          ),
+          const SizedBox(width: 8),
+          IconButton(
+            tooltip: 'Supprimer le nœud sélectionné',
+            onPressed: onDelete,
+            icon: const Icon(Icons.delete_outline),
+          ),
+        ],
+      ),
+    );
+  }
+}

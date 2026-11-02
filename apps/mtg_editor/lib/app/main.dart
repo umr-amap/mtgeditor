@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:mtg_editor/features/liste_plantes/screens/list_plantes_screen.dart';
+import 'package:backend_mtg/backend_mtg.dart';
+  import 'package:flutter/material.dart';
+import 'package:mtg_editor/features/topologie/screens/topology_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,30 +9,28 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MTG Editor',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can becx‹d   brer
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const ListPlantesScreen(),
+      home: TopologyScreen(tree: _exampleTree()),
     );
   }
+}
+
+MTGTree _exampleTree() {
+  final scale = MTGScale(symbol: 'M');
+  final root = MTGNode(id: 'P', scale: scale);
+  final trunk = MTGNode(id: 'Métamère 1', scale: scale, connexion: '<');
+  final branch = MTGNode(id: 'Métamère 2', scale: scale, connexion: '+');
+  root.addDescendant(trunk, connexion: '<');
+  root.addDescendant(branch, connexion: '+');
+
+  return MTGTree(
+    root: root,
+    nodes: {'P': root, 'Métamère 1': trunk, 'Métamère 2': branch},
+  );
 }
