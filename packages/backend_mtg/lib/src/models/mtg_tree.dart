@@ -3,17 +3,21 @@ import './mtg_scale.dart' ;
 import './mtg_description.dart' ;
 
 class MTGTree {
+  String? _id;
   List<MTGScale>? _scales;
   MTGNode? _root;
   Map<String, MTGNode>? _nodes;
   List<MTGDescription>? _descriptions;
 
-  MTGTree({List<MTGScale>? scales, MTGNode? root, Map<String, MTGNode>? nodes, List<MTGDescription>? description}){
+  MTGTree({List<MTGScale>? scales, MTGNode? root, Map<String, MTGNode>? nodes, List<MTGDescription>? description, String?  id}){
     this._scales = scales;
     this._root = root;
     this._nodes = nodes;
     this._descriptions = description;
+    this._id=id;
   }
+  String? getId() => this._id;
+  setId(String? value) => this._id = value;
 
   List<MTGScale>? getScales() => this._scales;
   setScale(List<MTGScale>? value) => this._scales = value;

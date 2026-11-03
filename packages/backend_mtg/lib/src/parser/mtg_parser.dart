@@ -9,16 +9,26 @@ class MTGParser {
   Map<int,dynamic> descriptions={};
   Map<int,dynamic> features={};
   Map<int,dynamic> mtg={};
+  String code="";
 Map<String, dynamic> parseMtgFile() {
   while (index < lines.length) {
     String currentLine = lines[index].trim();
     
-    // CORRECTION : Utiliser isAnySection au lieu de isSection sans paramètre
     if (!isAnySection(currentLine)) {
       index++;
       continue;
     }
-    
+    if (isSection(currentLine, 'CODE')) {
+          code = currentLine
+          .replaceFirst(
+            RegExp(r'^CODE[ \t]*:[ \t]*'),
+            '',
+          )
+          .trim();
+
+      index++;
+      continue;
+    }
     if (isSection(currentLine, "CLASSES")) {
       final (parsedClasses, nextIndex) = parseSection(
         ["SYMBOL", "SCALE", "DECOMPOSITION", "INDEXATION", "DEFINITION"],
@@ -66,6 +76,7 @@ Map<String, dynamic> parseMtgFile() {
     'classes': classes,
     'description': descriptions,
     'features': features,
+    'code':code,
   };
 }
   bool isSection(String line, [String? section]) {
