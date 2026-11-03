@@ -10,22 +10,22 @@ class PlantCreateApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const TabBarExample();
+    return const TabBarScreen();
   }
 }
 
-class TabBarExample extends StatefulWidget {
-  const TabBarExample({super.key, this.onBackToPlants});
+class TabBarScreen extends StatefulWidget {
+  const TabBarScreen({super.key, this.onBackToPlants});
 
   final void Function()? onBackToPlants;
 
   @override
-  State<TabBarExample> createState() => _TabBarState();
+  State<TabBarScreen> createState() => _TabBarState();
 }
 
 /// [AnimationController]s can be created with `vsync: this` because of
 /// [TickerProviderStateMixin].
-class _TabBarState extends State<TabBarExample> {
+class _TabBarState extends State<TabBarScreen> {
   int _selectedTab = 0;
 
   void _goToNextTab() {
