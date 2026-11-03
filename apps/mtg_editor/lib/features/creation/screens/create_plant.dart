@@ -65,32 +65,34 @@ class _TabBarState extends State<TabBarExample> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Row(
-              children: [
-                _buildTab(label: 'Templates', index: 0),
-                _buildTab(label: 'Propriétés', index: 1),
-                _buildTab(label: 'Topologie', index: 2),
-              ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Row(
+                children: [
+                  _buildTab(label: 'Templates', index: 0),
+                  _buildTab(label: 'Propriétés', index: 1),
+                  _buildTab(label: 'Topologie', index: 2),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: IndexedStack(
-              index: _selectedTab,
-              children: [
-                TemplateView(onContinue: _goToNextTab),
-                ProprieteView(onContinue: _goToNextTab),
-                Center(
-                  child: Text('La topologie sera disponible prochainement.'),
-                ),
-              ],
+            const SizedBox(height: 8.0),
+            Expanded(
+              child: IndexedStack(
+                index: _selectedTab,
+                children: [
+                  TemplateView(onContinue: _goToNextTab),
+                  ProprieteView(onContinue: _goToNextTab),
+                  Center(
+                    child: Text('La topologie sera disponible prochainement.'),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

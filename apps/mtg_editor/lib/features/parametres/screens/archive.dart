@@ -5,6 +5,6 @@ class ArchiveApp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-      return const Center(child: Text("Page Archive"),);
+      return SafeArea(child: const Center(child: Text("Page Archive"),));
   }
 }
