@@ -1,5 +1,6 @@
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:mtg_editor/features/parametres/screens/mytheme.dart';
 
 class TemplateView extends StatefulWidget {
   final VoidCallback onContinue;
@@ -25,8 +26,12 @@ class _MyFormState extends State<TemplateView> {
 
   @override
   Widget build(BuildContext context) {
+    final cardColor = Theme.of(context).brightness == Brightness.dark
+        ? MyTheme.darkSurface
+        : Colors.grey.shade200;
+
     return Card(
-      color: Colors.grey.shade200,
+      color: cardColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
@@ -44,11 +49,6 @@ class _MyFormState extends State<TemplateView> {
               const SizedBox(height: 16.0),
               const Text(
                 'Échelle de la plante',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Color(0xFF1E1B4B),
-                ),
               ),
               const SizedBox(height: 8),
               FormBuilderDropdown<String>(
@@ -90,7 +90,7 @@ class _MyFormState extends State<TemplateView> {
                         horizontal: 16,
                         vertical: 6,
                       ),
-                      color: Colors.grey.shade200,
+                      color: cardColor,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(16),
