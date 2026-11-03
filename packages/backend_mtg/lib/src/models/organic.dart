@@ -62,6 +62,10 @@ class Organic {
     this.attributes ??= {};
     this.attributes![key] = AttributesOrganic(key, name, description);
   }
+
+  void supAttribute(String key) {
+    this.attributes?.remove(key);
+  }
   
   
 }
