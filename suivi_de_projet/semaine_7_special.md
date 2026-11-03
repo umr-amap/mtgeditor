@@ -45,3 +45,12 @@
 - avancement sur le front
 - Ajout dans le readme
 - Travail sur le diagramme UML du modele
+
+## VENDREDI
+
+- backend
+    - tests
+    - reader
+
+- frontend
+    - debut de la page topologique

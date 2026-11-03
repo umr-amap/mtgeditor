@@ -10,3 +10,4 @@ packages/backend_mtg/coverage/test/models/test_mtg_node_test.dart.vm.json
 packages/backend_mtg/coverage/test/models/test_mtg_scale_test.dart.vm.json
 packages/backend_mtg/coverage/test/models/test_mtg_tree_test.dart.vm.json
 packages/backend_mtg/coverage/test/models/test_mtgattribute_test.dart.vm.json
+apps
