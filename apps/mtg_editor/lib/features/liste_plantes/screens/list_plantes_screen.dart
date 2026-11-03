@@ -22,6 +22,10 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
   String _searchQuery = '';
   int _selectedIndex = 0;
 
+  void _showPlantList() {
+    setState(() => _selectedIndex = 0);
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -69,9 +73,10 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
         index: _selectedIndex,
         children: [
           _buildPlantList(),
-          const TabBarExample(),
+          TabBarExample(onBackToPlants: _showPlantList),
           const EcranSettings(),
-        ]),
+        ],
+      ),
     );
   }
 
@@ -90,9 +95,7 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
           ),
           Expanded(
             child: filteredPlants.isEmpty
-                ? const Center(
-                    child: Text('Aucune plante trouvée'),
-                  )
+                ? const Center(child: Text('Aucune plante trouvée'))
                 : ListView.builder(
                     padding: const EdgeInsets.all(8),
                     itemCount: filteredPlants.length,

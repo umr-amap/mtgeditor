@@ -15,7 +15,9 @@ class PlantCreateApp extends StatelessWidget {
 }
 
 class TabBarExample extends StatefulWidget {
-  const TabBarExample({super.key});
+  const TabBarExample({super.key, this.onBackToPlants});
+
+  final void Function()? onBackToPlants;
 
   @override
   State<TabBarExample> createState() => _TabBarState();
@@ -40,9 +42,13 @@ class _TabBarState extends State<TabBarExample> {
         _selectedTab--;
       });
       return;
+    } else {
+      if (widget.onBackToPlants != null) {
+        widget.onBackToPlants!();
+      } else {
+        Navigator.pop(context);
+      }
     }
-
-    Navigator.of(context).maybePop();
   }
 
   @override
@@ -58,10 +64,14 @@ class _TabBarState extends State<TabBarExample> {
             padding: const EdgeInsetsDirectional.only(end: 25.0),
             child: IconButton(
               onPressed: () {
-                // TODO : Retourner sur l'ancienne page
+                if (widget.onBackToPlants != null) {
+                  widget.onBackToPlants!();
+                } else {
+                  Navigator.pop(context);
+                }
               },
               icon: const Icon(Icons.close),
-            ), // TODO: Faire le onTap close
+            ),
           ),
         ],
       ),
@@ -104,7 +114,6 @@ class _TabBarState extends State<TabBarExample> {
 
     return Expanded(
       child: InkWell(
-        onTap: () => setState(() => _selectedTab = index),
         borderRadius: BorderRadius.circular(8.0),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
