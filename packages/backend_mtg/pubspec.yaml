@@ -1,0 +1,6 @@
+name: backend_mtg
+description: Backend models and MTG parsing utilities.
+publish_to: none
+
+environment:
+  sdk: ^3.13.5
