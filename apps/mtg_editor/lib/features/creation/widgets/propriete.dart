@@ -6,6 +6,7 @@ import 'package:mtg_editor/features/creation/widgets/map.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:mtg_editor/features/parametres/screens/mytheme.dart';
 
 class ProprieteView extends StatefulWidget {
   final VoidCallback onContinue;
@@ -327,8 +328,12 @@ class _MyFormState extends State<ProprieteView> {
 
   @override
   Widget build(BuildContext context) {
+    final cardColor = Theme.of(context).brightness == Brightness.dark
+        ? MyTheme.darkSurface
+        : Colors.grey.shade200;
+
     return Card(
-      color: Colors.grey.shade200,
+      color: cardColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),

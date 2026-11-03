@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 import './mytheme.dart';
@@ -46,7 +46,7 @@ class EcranSettings extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (context) => const GuideUtilisateurApp(),
+                      builder: (context) => GuideUtilisateurPage(),
                     ),
                   );
                 },

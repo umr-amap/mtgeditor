@@ -47,6 +47,7 @@ dependencies:
   provider: ^6.1.5+1
   settings_ui: ^4.0.2
   google_fonts: ^9.0.0
+  syncfusion_flutter_pdfviewer: ^35.1.42
 
 dev_dependencies:
   flutter_test:

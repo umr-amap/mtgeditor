@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mtg_editor/features/liste_plantes/screens/list_plantes_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:mtg_editor/features/parametres/viewmodels/setting_view_model.dart';
