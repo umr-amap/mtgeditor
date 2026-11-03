@@ -1,0 +1,25 @@
+se mettre dans backend_mtg et lancer tous les test
+dart test --coverage=coverage test/models
+
+LANCER UN SEUL TEST
+dart test test/MON_FICHIER.dart
+
+Pour convertir les données générées en rapport LCOV, active l’outil une seule fois 
+dart pub global activate coverage
+
+Générer le rapport .info
+dart pub global run coverage:format_coverage \
+  --lcov \
+  --in=coverage \
+  --out=coverage/lcov.info \
+  --packages=.dart_tool/package_config.json \
+  --report-on=lib
+
+INSTALLER lcov
+sudo apt install lcov
+
+GENERER LE COVERAGE EN FORMAT WEB
+genhtml coverage/lcov.info --output-directory coverage/html
+
+COVERAGE EN FORMAT TERMINAL
+lcov --summary coverage/lcov.info

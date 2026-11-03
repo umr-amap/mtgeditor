@@ -1,31 +1,27 @@
-import './mtg_attribute.dart';
 
+/// Représente une échelle MTG par son niveau et son symbole.
 class MTGScale {
     int? _echelle;
     String? _symbol;
-    List<MTGAttribute>? _attributes;
+    
 
-    MTGScale({int? echelle, String? symbol, List<MTGAttribute>? attributes}){
+    /// Crée une échelle avec un niveau et un symbole éventuellement absents.
+    MTGScale({int? echelle, String? symbol}){
         this._echelle = echelle;
         this._symbol = symbol;
-        this._attributes = attributes;
     }
 
+    /// Renvoie le niveau de l'échelle.
     int? getEchelle() => this._echelle;
+
+    /// Définit le niveau de l'échelle.
     setEchelle(int? value) => this._echelle = value;
 
+    /// Renvoie le symbole de l'échelle.
     String? getSymbol() => this._symbol;
+
+    /// Définit le symbole de l'échelle.
     setSymbol(String? value) => this._symbol = value;
 
-    List<MTGAttribute>? getAttributes() => this._attributes;
-    setAttributes(List<MTGAttribute>? value) => this._attributes = value;
 
-    void addAttribute(MTGAttribute attribute) {
-        this._attributes ??= [];
-        this._attributes!.add(attribute);
-    }
-
-    void supAttribute(MTGAttribute attribute) {
-        this._attributes?.removeWhere((a) => a.getName() == attribute.getName());
-    }
 }
