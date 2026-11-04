@@ -1,5 +1,5 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:backend_mtg/backend_mtg.dart';
+import 'package:flutter/material.dart';
 
 class OrganicCard extends StatelessWidget {
   const OrganicCard({required this.organic, super.key});

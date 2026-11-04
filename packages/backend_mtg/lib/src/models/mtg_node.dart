@@ -65,7 +65,7 @@ class MTGNode {
       this._attributes?[attribute]=value;
     }
   }
-  void supAttribute(MTGAttribute attribute) {
+  void supAttribute(MTGAttribute attribute){
       this._attributes?.remove(attribute);
   }
 

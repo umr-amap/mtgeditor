@@ -1,5 +1,6 @@
 import 'package:backend_mtg/backend_mtg.dart';
   import 'package:flutter/material.dart';
+import 'package:mtg_editor/features/liste_plantes/screens/list_plantes_screen.dart';
 import 'package:mtg_editor/features/topologie/screens/topology_screen.dart';
 
 void main() {
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MTG Editor',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),

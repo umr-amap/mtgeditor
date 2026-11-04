@@ -33,12 +33,16 @@ class _NodeDetailsPanelState extends State<NodeDetailsPanel> {
     _controllers = _createControllers();
   }
 
-  Map<String, TextEditingController> _createControllers() => {
-    for (final attribute
-        in widget.node.getScale()?.getAttributes() ?? <MTGAttribute>[])
-      if (attribute.getName() != null)
-        attribute.getName()!: TextEditingController(),
-  };
+  Map<String, TextEditingController> _createControllers() {
+    final attributes = widget.node.getAttributes() ?? {};
+    return {
+      for (final entry in attributes.entries)
+        if (entry.key.getName() != null)
+          entry.key.getName()!: TextEditingController(
+            text: entry.value?.toString() ?? '',
+          ),
+    };
+  }
 
   void _disposeControllers() {
     for (final controller in _controllers.values) {
@@ -54,51 +58,72 @@ class _NodeDetailsPanelState extends State<NodeDetailsPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final attributes =
-        widget.node.getScale()?.getAttributes() ?? <MTGAttribute>[];
-    return Material(
-      color: const Color(0xFFF7F1FB),
-      child: SafeArea(
+    final attributes = widget.node.getAttributes()?.entries ?? [];
+    return DraggableScrollableSheet(
+      initialChildSize: 0.3,
+      minChildSize: 0.15,
+      maxChildSize: 0.8,
+      builder: (context, scrollController) => SafeArea(
         top: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        child: Material(
+          color: const Color(0xFFF7F1FB),
+          child: ListView(
+            controller: scrollController,
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      widget.node.getId() ?? 'Nœud',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    Text(
-                      'Échelle : ${widget.node.getScale()?.getSymbol() ?? 'non définie'}',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    for (final attribute in attributes.take(2))
-                      if (attribute.getName() != null)
-                        TextField(
-                          controller: _controllers[attribute.getName()],
-                          keyboardType:
-                              attribute.getType() == MTGAttributeType.Int
-                              ? TextInputType.number
-                              : TextInputType.text,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            labelText: attribute.getName(),
-                          ),
-                        ),
-                  ],
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade500,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
               ),
-              IconButton(
-                tooltip: 'Désélectionner',
-                onPressed: widget.onClose,
-                icon: const Icon(Icons.close),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.node.getId() ?? 'Nœud',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        Text(
+                          'Échelle : ${widget.node.getScale()?.getSymbol() ?? 'non définie'}',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    tooltip: 'Désélectionner',
+                    onPressed: widget.onClose,
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
               ),
+              for (final entry in attributes)
+                if (entry.key.getName() != null)
+                  Row(
+                    children: [
+                      Text('${entry.key.getName()!} : '),
+                      Expanded(
+                        child: TextField(
+                          controller: _controllers[entry.key.getName()!],
+                          keyboardType:
+                              entry.key.getType() == MTGAttributeType.Int
+                              ? TextInputType.number
+                              : TextInputType.text,
+                          decoration: InputDecoration(isDense: true),
+                        ),
+                      ),
+                    ],
+                  ),
             ],
           ),
         ),

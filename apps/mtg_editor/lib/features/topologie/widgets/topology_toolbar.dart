@@ -16,7 +16,7 @@ class TopologyToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!visible) return const SizedBox.shrink();
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

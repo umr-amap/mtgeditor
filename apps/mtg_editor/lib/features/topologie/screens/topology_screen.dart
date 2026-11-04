@@ -52,7 +52,11 @@ class _TopologyScreenState extends State<TopologyScreen> {
       ),
     );
     if (!mounted || result == null) return;
-    final node = MTGNode(id: result.id, scale: parent.getScale());
+    final node = MTGNode(
+      id: result.id,
+      scale: parent.getScale(),
+      attributes: result.attributes,
+    );
     final added = _controller.addNode(
       node: node,
       parent: parent,
@@ -83,17 +87,25 @@ class _TopologyScreenState extends State<TopologyScreen> {
                 return Column(
                   children: [
                     Expanded(
-                      child: TopologyCanvas(
-                        controller: _controller,
-                        onNodeTap: _controller.selectNode,
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: TopologyCanvas(
+                              controller: _controller,
+                              onNodeTap: _controller.selectNode,
+                            ),
+                          ),
+                          if (selected != null)
+                            Positioned.fill(
+                              child: NodeDetailsPanel(
+                                key: ValueKey(selected.getId()),
+                                node: selected,
+                                onClose: () => _controller.selectNode(null),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                    if (selected != null)
-                      NodeDetailsPanel(
-                        key: ValueKey(selected.getId()),
-                        node: selected,
-                        onClose: () => _controller.selectNode(null),
-                      ),
                     TopologyToolbar(
                       onAdd: _openCreationPage,
                       onDelete: selected == null

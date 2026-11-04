@@ -1,5 +1,5 @@
 import 'package:backend_mtg/backend_mtg.dart';
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:mtg_editor/features/liste_plantes/widgets/organic_card.dart';
 import 'package:mtg_editor/features/liste_plantes/widgets/plant_search_bar.dart';
