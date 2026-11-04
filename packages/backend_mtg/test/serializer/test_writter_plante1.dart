@@ -70,7 +70,7 @@ void main() {
         ),
       ],
     );
-    final output = File('test/files/generated_plant.mtg');
+    final output = File('test/files/generated_plant1.mtg');
 
     await write(tree, output.path);
 
