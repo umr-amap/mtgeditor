@@ -114,17 +114,24 @@ Map<String, dynamic> parseMtgFile() {
   int index,
   [String? section]
 ) {
-  if (index >= lines.length && !isAnySection(lines[index])) {
-    throw FormatException('No value or section is not the good one');
-  }
+if (index >= lines.length) {
+  throw FormatException('Section introuvable ou fichier incomplet');
+}
+
+if (!isAnySection(lines[index])) {
+  throw FormatException('Section incorrecte');
+}
 
   final lignes = <int, Map<String, String>>{};
 
   // Passer à la ligne du header
-  index++;
+  final actualHeader = lines[index + 1]
+      .split('\t')
+      .map((e) => e.trim())
+      .toList();
 
-  if (index >= lines.length) {
-    throw FormatException('Missing header');
+  if (actualHeader.length != header.length) {
+    throw FormatException('Header incorrect dans la section $section');
   }
 
   // Passer à la première ligne de données
@@ -133,7 +140,7 @@ Map<String, dynamic> parseMtgFile() {
   int i = 1;
 
   while (index < lines.length &&
-      lines[index].isNotEmpty &&
+      lines[index].trim().isNotEmpty &&
       !isAnySection(lines[index])) {
 
     final values = lines[index].split('\t');
@@ -163,6 +170,10 @@ Map<String, dynamic> parseMtgFile() {
 
   // L'en-tête se trouve juste après la ligne "MTG:"
   final headers = lines[index + 1].split('\t');
+
+  if (index + 1 >= lines.length) {
+    throw const FormatException('Header MTG manquant');
+  }
   index += 2; // passer "MTG:" et l'en-tête
 
   var rowNumber = 1;
@@ -180,14 +191,17 @@ Map<String, dynamic> parseMtgFile() {
 
     final row = <String, String?>{};
 
-    for (var column = 0; column < headers.length; column++) {
+    row['ENTITY-CODE'] = values[0].trim();
+
+    for (var column = 1; column < headers.length; column++) {
       final name = headers[column].trim();
 
-      // La colonne vide de l'en-tête correspond au séparateur MTG,
-      // pas à une feature.
       if (name.isEmpty) continue;
 
-      final value = column < values.length ? values[column].trim() : '';
+      final value = column < values.length
+          ? values[column].trim()
+          : '';
+
       row[name] = value.isEmpty ? null : value;
     }
 
