@@ -64,15 +64,14 @@ String writeContentMtg(int tab, MTGNode node) {
     throw StateError('Le nœud doit avoir un identifiant.');
   }
 
-  final indentation = List.filled(tab, '\t').join();
-
   String rulePrefix = '';
-
   if (node.getConnexion() == '+') {
     tab++;
   }else{
     rulePrefix = '^';
   }
+
+  final indentation = List.filled(tab, '\t').join();
 
   final connexion = node.getConnexion() ?? '';
 
