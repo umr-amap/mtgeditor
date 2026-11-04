@@ -4,6 +4,7 @@ import './mtg_description.dart' ;
 
 /// Regroupe les échelles, descriptions et nœuds d'un modèle MTG.
 class MTGTree {
+  String? _id;
   List<MTGScale>? _scales;
   MTGNode? _root;
   Map<String, MTGNode>? _nodes;
@@ -20,6 +21,8 @@ class MTGTree {
     this._dateModification = dateModification;
     this._dateCreation = dateCreation;
   }
+  String? getId() => this._id;
+  setId(String? value) => this._id = value;
 
   /// Renvoie les échelles de l'arbre.
   List<MTGScale>? getScales() => this._scales;
