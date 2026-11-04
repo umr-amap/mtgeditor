@@ -11,7 +11,7 @@ Future<void> write(MTGTree tree,nomfichier) async{
   String classes="CLASSES: \nSYMBOL\tSCALE\tDECOMPOSITION\tINDEXATION\tDEFINITION \n";
   String description="DESCRIPTION: \nLEFT\tRIGHT\tRELTYPE\tMAX \n";
   String features="FEATURES: \nNAME\tTYPE \n";
-  String mtg="MTG: \n ENTITY-CODE\t";
+  String mtg="MTG: \nENTITY-CODE\t";
 
   //écritures des classes
   final scales = tree.getScales();
