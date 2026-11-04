@@ -10,9 +10,9 @@ import 'package:test/test.dart';
 
 void main() {
   test('1) génère un fichier MTG à inspecter manuellement', () async {
-    final plantScale = MTGScale(symbol: 'Plant', echelle: 0);
-    final internodeScale = MTGScale(symbol: 'Internode', echelle: 1);
-    final leafScale = MTGScale(symbol: 'Leaf', echelle: 2);
+    final plantScale = MTGScale(symbol: 'Plant', echelle: 1);
+    final internodeScale = MTGScale(symbol: 'Internode', echelle: 2);
+    final leafScale = MTGScale(symbol: 'Leaf', echelle: 3);
     final length = MTGAttribute(
       name: 'Length',
       type: MTGAttributeType.double,
