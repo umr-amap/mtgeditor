@@ -8,9 +8,9 @@ import '../models/mtg_tree.dart';
 
 Future<void> write(MTGTree tree,nomfichier) async{
   // mise en place des headers statiques
-  String classes="CLASSES: \n SYMBOL\tSCALE\tDECOMPOSITION\tINDEXATION\tDEFINITION \n";
-  String description="DESCRIPTION: \n LEFT\tRIGHT\tRELTYPE\tMAX \n";
-  String features="FEATURES: \n NAME\tTYPE \n";
+  String classes="CLASSES: \nSYMBOL\tSCALE\tDECOMPOSITION\tINDEXATION\tDEFINITION \n";
+  String description="DESCRIPTION: \nLEFT\tRIGHT\tRELTYPE\tMAX \n";
+  String features="FEATURES: \nNAME\tTYPE \n";
   String mtg="MTG: \n ENTITY-CODE\t";
 
   //écritures des classes
@@ -25,8 +25,10 @@ Future<void> write(MTGTree tree,nomfichier) async{
   final descriptions = tree.getDescriptions();
   if (descriptions != null) {
     for (final d in descriptions) {
-      description+=d.getParents().toString() + "\t" + d.getEnfants().toString()+ "\t"+ 
-      d.getOperation().toString()+"\t"+ d.getLimite().toString()+"\n";
+      description += d.getParents()!.join(", ") + "\t" +
+        d.getEnfants()!.join(", ") + "\t" +
+        d.getOperation().toString() + "\t" +
+        d.getLimite().toString() + "\n";
     }
   }
 
@@ -34,7 +36,7 @@ Future<void> write(MTGTree tree,nomfichier) async{
   final attributes = tree.getRoot()?.getAttributes();
   if(attributes!=null){
     for(MTGAttribute a in attributes.keys){
-      if(mtgType(a.getType()).isEmpty!=false){
+      if(mtgType(a.getType()).isEmpty==false){
         features+=a.getName()!+"\t"+mtgType(a.getType())+"\n";
         mtg+=a.getName()!+"\t";
       }
@@ -67,6 +69,8 @@ String writeContentMtg(int tab, MTGNode node) {
   String rulePrefix = '';
 
   if (node.getConnexion() == '+') {
+    tab++;
+  }else{
     rulePrefix = '^';
   }
 
@@ -84,7 +88,7 @@ String writeContentMtg(int tab, MTGNode node) {
 
   // Parcours récursif des enfants
   for (final child in node.getDescendants()!) {
-    content += writeContentMtg(tab + 1, child);
+    content += writeContentMtg(tab , child);
   }
 
   return content;
