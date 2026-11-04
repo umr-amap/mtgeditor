@@ -2,6 +2,7 @@ import './mtg_node.dart' ;
 import './mtg_scale.dart' ;
 import './mtg_description.dart' ;
 
+/// Regroupe les échelles, descriptions et nœuds d'un modèle MTG.
 class MTGTree {
   String? _id;
   List<MTGScale>? _scales;
@@ -19,32 +20,49 @@ class MTGTree {
   String? getId() => this._id;
   setId(String? value) => this._id = value;
 
+  /// Renvoie les échelles de l'arbre.
   List<MTGScale>? getScales() => this._scales;
+
+  /// Remplace la liste des échelles.
   setScale(List<MTGScale>? value) => this._scales = value;
 
+  /// Renvoie le nœud racine de l'arbre.
   MTGNode? getRoot() => this._root;
+
+  /// Définit le nœud racine de l'arbre.
   setRoot(MTGNode? value) => this._root = value;
 
+  /// Renvoie l'index des nœuds, associant chaque identifiant à son nœud.
   Map<String, MTGNode>? getNodes() => this._nodes;
+
+  /// Remplace l'index des nœuds.
   setNodes(Map<String, MTGNode>? value) => this._nodes = value;
 
+  /// Renvoie les descriptions des relations entre échelles.
   List<MTGDescription>? getDescriptions() => this._descriptions;
+
+  /// Remplace la liste des descriptions.
   setDescriptions(List<MTGDescription>? value) => this._descriptions = value;
 
+  /// Ajoute une échelle à la liste, en créant celle-ci si besoin.
   addScale(MTGScale scale) {
     this._scales ??= [];
     this._scales!.add(scale);
   }
 
+  /// Supprime les échelles ayant le même symbole que [scale].
   void supScale(MTGScale scale) {
     this._scales?.removeWhere((s) => s.getSymbol() == scale.getSymbol());
   }
 
+  /// Ajoute une description à la liste, en créant celle-ci si besoin.
   void addDescription(MTGDescription description) {
     this._descriptions ??= [];
     this._descriptions!.add(description);
   }
 
+  /// Supprime les descriptions ayant la même opération et les mêmes ensembles
+  /// d'échelles parentes et enfants que [description].
   void supDescription(MTGDescription description) {
     _descriptions?.removeWhere((d) {
       if (d.getOperation() != description.getOperation()) return false;
@@ -59,6 +77,7 @@ class MTGTree {
     });
   }
 
+  /// Ajoute [node] à l'index global s'il possède un identifiant.
   void addNode(MTGNode node) {
     final id = node.getId();
     if (id != null) {
@@ -67,6 +86,8 @@ class MTGTree {
     }
   }
 
+  /// Rattache [node] à [parent], ou en fait la racine si aucune racine n'existe,
+  /// puis l'ajoute à l'index global.
   void attachNode({
     required MTGNode node,
     MTGNode? parent,
@@ -81,6 +102,7 @@ class MTGTree {
     addNode(node);
   }
 
+  /// Supprime récursivement [node] et ses descendants de l'arbre et de l'index.
   void supNode(MTGNode node) {
     // 1. Suppression récursive de tous les descendants (coupe de la branche)
     final descendants = List<MTGNode>.from(node.getDescendants() ?? []);
@@ -102,6 +124,7 @@ class MTGTree {
     }
   }
 
+  /// Recherche puis supprime le nœud d'identifiant [id], s'il existe.
   void supNodeById(String id) {
     final node = getNodeById(id);
     if (node != null) {
@@ -109,10 +132,12 @@ class MTGTree {
     }
   }
 
+  /// Renvoie le nœud associé à [id], ou `null` s'il est absent de l'index.
   MTGNode? getNodeById(String id) {
     return this._nodes?[id];
   }
 
+  /// Recherche dans l'index le nœud ayant le même identifiant que [node].
   MTGNode? getNode(MTGNode node) {
     return this._nodes?[node.getId()!];
   }
