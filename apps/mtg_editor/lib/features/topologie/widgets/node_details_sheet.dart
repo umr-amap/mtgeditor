@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 class NodeDetailsPanel extends StatefulWidget {
   final MTGNode node;
+  final int revision;
   final VoidCallback onClose;
 
   const NodeDetailsPanel({
     super.key,
     required this.node,
+    required this.revision,
     required this.onClose,
   });
 
@@ -27,7 +29,10 @@ class _NodeDetailsPanelState extends State<NodeDetailsPanel> {
   @override
   void didUpdateWidget(covariant NodeDetailsPanel oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.node.getId() == widget.node.getId()) return;
+    if (oldWidget.node.getId() == widget.node.getId() &&
+        oldWidget.revision == widget.revision) {
+      return;
+    }
 
     _disposeControllers();
     _controllers = _createControllers();

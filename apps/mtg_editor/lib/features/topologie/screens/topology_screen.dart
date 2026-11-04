@@ -6,6 +6,7 @@ import '../widgets/node_details_sheet.dart';
 import '../widgets/topology_canvas.dart';
 import '../widgets/topology_toolbar.dart';
 import 'node_creation_screen.dart';
+import 'node_modification_screen.dart';
 
 class TopologyScreen extends StatefulWidget {
   final MTGTree tree;
@@ -73,6 +74,35 @@ class _TopologyScreenState extends State<TopologyScreen> {
     _controller.selectNode(node);
   }
 
+  Future<void> _openModificationPage() async {
+    final node = _controller.selectedNode;
+    if (node == null) return;
+    final result = await Navigator.push<NodeModificationResult>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => NodeModificationScreen(
+          node: node,
+          existingIds: _controller.nodes
+              .map((node) => node.getId())
+              .whereType<String>()
+              .toSet(),
+        ),
+      ),
+    );
+    if (!mounted || result == null) return;
+    final updated = _controller.updateNode(
+      node: node,
+      id: result.id,
+      connexion: result.connexion,
+      attributes: result.attributes,
+    );
+    if (!updated && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cet identifiant existe déjà.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,6 +130,7 @@ class _TopologyScreenState extends State<TopologyScreen> {
                               child: NodeDetailsPanel(
                                 key: ValueKey(selected.getId()),
                                 node: selected,
+                                revision: _controller.nodeRevision,
                                 onClose: () => _controller.selectNode(null),
                               ),
                             ),
@@ -108,6 +139,7 @@ class _TopologyScreenState extends State<TopologyScreen> {
                     ),
                     TopologyToolbar(
                       onAdd: _openCreationPage,
+                      onEdit: _openModificationPage,
                       onDelete: selected == null
                           ? () {}
                           : () => _controller.removeNode(selected),

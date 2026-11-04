@@ -1,15 +1,20 @@
-import './mtg_scale.dart' ;
+import './mtg_scale.dart';
 import './mtg_attribute.dart';
 
 class MTGNode {
-
   String? _id;
   MTGScale? _scale;
   String? _connexion;
   MTGNode? _parent;
   List<MTGNode>? _descendants;
-  Map<MTGAttribute,dynamic>? _attributes;
-  MTGNode({String? id, MTGScale? scale, String? connexion, MTGNode? parent, List<MTGNode>? descendants, Map<MTGAttribute,dynamic>? attributes}){
+  Map<MTGAttribute, dynamic>? _attributes;
+  MTGNode(
+      {String? id,
+      MTGScale? scale,
+      String? connexion,
+      MTGNode? parent,
+      List<MTGNode>? descendants,
+      Map<MTGAttribute, dynamic>? attributes}) {
     this._id = id;
     this._scale = scale;
     this._connexion = connexion;
@@ -34,39 +39,46 @@ class MTGNode {
   setDescendants(List<MTGNode>? value) => this._descendants = value;
 
   bool isRoot() => this._parent == null;
-  
+
   bool isLeaf() => this._descendants == null || this._descendants!.isEmpty;
- 
+
   void addDescendant(MTGNode descendant, {String? connexion}) {
     this._descendants ??= [];
     this._descendants!.add(descendant);
 
     descendant.setParent(this);
-    if(connexion != null){
+    if (connexion != null) {
       descendant.setConnexion(connexion);
     }
   }
 
-  void supDescendant(MTGNode desc){
-    this._descendants?.removeWhere((descendant) => descendant.getId() == desc.getId());
+  void supDescendant(MTGNode desc) {
+    this
+        ._descendants
+        ?.removeWhere((descendant) => descendant.getId() == desc.getId());
   }
 
-  Map<MTGAttribute,dynamic>? getAttributes() => this._attributes;
-  setAttributes(Map<MTGAttribute,dynamic>? value) => this._attributes?.addAll(value!);
+  Map<MTGAttribute, dynamic>? getAttributes() => this._attributes;
+  setAttributes(Map<MTGAttribute, dynamic>? value) =>
+      this._attributes?.addAll(value!);
+
+  void replaceAttributes(Map<MTGAttribute, dynamic>? value) {
+    this._attributes = value;
+  }
 
   void addAttribute(MTGAttribute attribute) {
-      this._attributes?[attribute]=null;
+    this._attributes?[attribute] = null;
   }
 
-  void addvalue(MTGAttribute attribute,dynamic value){
-    if(attribute.type!=value.runtimeType){
+  void addvalue(MTGAttribute attribute, dynamic value) {
+    if (attribute.type != value.runtimeType) {
       throw FormatException("pas le bon type de valeur");
-    }else{
-      this._attributes?[attribute]=value;
+    } else {
+      this._attributes?[attribute] = value;
     }
   }
-  void supAttribute(MTGAttribute attribute){
-      this._attributes?.remove(attribute);
-  }
 
+  void supAttribute(MTGAttribute attribute) {
+    this._attributes?.remove(attribute);
+  }
 }

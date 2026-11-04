@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class TopologyToolbar extends StatelessWidget {
   final VoidCallback onAdd;
+  final VoidCallback onEdit;
   final VoidCallback onDelete;
   final bool visible;
 
   const TopologyToolbar({
     super.key,
     required this.onAdd,
+    required this.onEdit,
     required this.onDelete,
     required this.visible,
   });
@@ -24,6 +26,12 @@ class TopologyToolbar extends StatelessWidget {
             onPressed: onAdd,
             icon: const Icon(Icons.add),
             label: const Text('Ajouter'),
+          ),
+          const SizedBox(width: 8),
+          FilledButton.icon(
+            onPressed: onEdit,
+            icon: const Icon(Icons.edit),
+            label: const Text('Modifier'),
           ),
           const SizedBox(width: 8),
           IconButton(

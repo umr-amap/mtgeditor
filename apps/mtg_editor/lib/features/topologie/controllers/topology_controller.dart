@@ -14,6 +14,7 @@ class TopologyController extends ChangeNotifier {
 
   final MTGTree tree;
   String? selectedNodeId;
+  int nodeRevision = 0;
   final Map<String, Offset> positions = {};
 
   TopologyController({required this.tree});
@@ -186,6 +187,40 @@ class TopologyController extends ChangeNotifier {
 
     tree.attachNode(node: node, parent: parent, connexion: connexion);
 
+    layoutNodes();
+    notifyListeners();
+    return true;
+  }
+
+  bool updateNode({
+    required MTGNode node,
+    required String id,
+    required String connexion,
+    required Map<MTGAttribute, dynamic> attributes,
+  }) {
+    final oldId = node.getId();
+    if (id.isEmpty ||
+        (id != oldId && nodes.any((existingNode) => existingNode.getId() == id))) {
+      return false;
+    }
+
+    if (oldId != id) {
+      final nodesById = tree.getNodes();
+      if (nodesById != null && oldId != null) {
+        nodesById.remove(oldId);
+        nodesById[id] = node;
+      }
+      if (oldId != null) {
+        final oldPosition = positions.remove(oldId);
+        if (oldPosition != null) positions[id] = oldPosition;
+      }
+      if (selectedNodeId == oldId) selectedNodeId = id;
+      node.setId(id);
+    }
+
+    node.setConnexion(connexion);
+    node.replaceAttributes(attributes);
+    nodeRevision++;
     layoutNodes();
     notifyListeners();
     return true;
