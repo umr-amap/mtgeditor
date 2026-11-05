@@ -11,8 +11,9 @@ class OrganicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = organic.imagesUrls.isNotEmpty
-        ? organic.imagesUrls.first
+    final imageUrls = organic.imagesUrls ?? const <String>[];
+    final imageUrl = imageUrls.isNotEmpty
+        ? imageUrls.first
         : null;
 
     return Card(
@@ -39,7 +40,7 @@ class OrganicCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(organic.tag),
+                Text(organic.tag ?? ''),
                 if (organic.latitude != null && organic.longitude != null)
                   Text(
                     '${organic.latitude}, ${organic.longitude}',

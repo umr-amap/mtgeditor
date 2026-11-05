@@ -3,6 +3,7 @@ import 'package:mtg_editor/features/liste_plantes/screens/list_plantes_screen.da
 import 'package:provider/provider.dart';
 import 'package:mtg_editor/features/parametres/viewmodels/setting_view_model.dart';
 import 'package:mtg_editor/features/parametres/screens/mytheme.dart';
+import '../database/app_database.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,21 +11,22 @@ void main() {
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => SettingViewModel()),
     ],
-      child: const MyApp(),
+      child: MyApp(database: AppDatabase()),
     )
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({required this.database, super.key});
 
+  final AppDatabase database;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MTG Editor',
       theme: context.watch<SettingViewModel>().isDark ? MyTheme.dark() : MyTheme.light(),
-      home: const ListPlantesScreen(),
+      home: ListPlantesScreen(database: database),
     );
   }
 }
