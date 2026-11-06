@@ -1,10 +1,18 @@
-import 'package:backend_mtg/backend_mtg.dart';
-  import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mtg_editor/features/liste_plantes/screens/list_plantes_screen.dart';
-import 'package:mtg_editor/features/topologie/screens/topology_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:mtg_editor/features/parametres/viewmodels/setting_view_model.dart';
+import 'package:mtg_editor/features/parametres/screens/mytheme.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => SettingViewModel()),
+    ],
+      child: const MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,11 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MTG Editor',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: TopologyScreen(tree: _exampleTree()),
+      theme: context.watch<SettingViewModel>().isDark ? MyTheme.dark() : MyTheme.light(),
+      home: const ListPlantesScreen(),
     );
   }
 }

@@ -1,8 +1,10 @@
 import 'package:backend_mtg/backend_mtg.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:mtg_editor/features/liste_plantes/widgets/organic_card.dart';
 import 'package:mtg_editor/features/liste_plantes/widgets/plant_search_bar.dart';
+import 'package:mtg_editor/features/creation/screens/create_plant.dart';
+import 'package:mtg_editor/features/parametres/screens/parametre.dart';
 
 class ListPlantesScreen extends StatefulWidget {
   const ListPlantesScreen({super.key});
@@ -18,6 +20,11 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
     Organic(tag: 'Plante 2'),
   ];
   String _searchQuery = '';
+  int _selectedIndex = 0;
+
+  void _showPlantList() {
+    setState(() => _selectedIndex = 0);
+  }
 
   @override
   void dispose() {
@@ -43,53 +50,61 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredPlants = _filteredPlants;
-
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
-        items: [
+        currentIndex: _selectedIndex,
+        onTap: (index) => setState(() => _selectedIndex = index),
+        items: const [
           BottomNavigationBarItem(
-            icon: Icon(Symbols.psychiatry, size: 24, color: Color(0xFF1F1F1F)),
+            icon: Icon(Symbols.psychiatry, size: 24),
             label: 'Plantes',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add_circle_outline,
-              size: 24,
-              color: Color(0xFF1F1F1F),
-            ),
+            icon: Icon(Icons.add_circle_outline, size: 24),
             label: 'Création',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Symbols.settings, size: 24, color: Color(0xFF1F1F1F)),
+            icon: Icon(Symbols.settings, size: 24),
             label: 'Paramètres',
           ),
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: PlantSearchBar(
-                controller: _searchController,
-                onChanged: _filterPlants,
-              ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          _buildPlantList(),
+          TabBarExample(onBackToPlants: _showPlantList),
+          const EcranSettings(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlantList() {
+    final filteredPlants = _filteredPlants;
+
+    return SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: PlantSearchBar(
+              controller: _searchController,
+              onChanged: _filterPlants,
             ),
-            Expanded(
-              child: filteredPlants.isEmpty
-                  ? const Center(child: Text('Aucune plante trouvée'))
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(8),
-                      itemCount: filteredPlants.length,
-                      itemBuilder: (context, index) {
-                        return OrganicCard(organic: filteredPlants[index]);
-                      },
-                    ),
-            ),
-          ],
-        ),
+          ),
+          Expanded(
+            child: filteredPlants.isEmpty
+                ? const Center(child: Text('Aucune plante trouvée'))
+                : ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: filteredPlants.length,
+                    itemBuilder: (context, index) {
+                      return OrganicCard(organic: filteredPlants[index]);
+                    },
+                  ),
+          ),
+        ],
       ),
     );
   }
