@@ -18,7 +18,7 @@ void main() {
 
       expect(
         classes.map((scale) => scale.getSymbol()).toList(),
-        ['$', 'Individual', 'Axis', 'Internode', 'Leaf'],
+        [r"$", 'Individual', 'Axis', 'Internode', 'Leaf'],
       );
       expect(
         classes.map((scale) => scale.getEchelle()).toList(),

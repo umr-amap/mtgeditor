@@ -28,17 +28,17 @@ class Reader {
     List<MTGScale> classes= [];
     final result= parser.parseMtgFile();
     final features = result['features'] as Map<int, dynamic>;
-    for (final entry in features.entries) {
+    for (final entry in features.entries.skip(1)) {
       final row = entry.value as Map<String, String>;
       attributes.add(MTGAttribute(name: row['NAME'],type: parseAttributeType(row['TYPE']!)));
     }
     final classe = result['classes'] as Map<int, dynamic>;
-    for (final entry in classe.entries) {
+    for (final entry in classe.entries.skip(1)) {
       final row = entry.value as Map<String, String>;
-      classes.add(MTGScale(symbol: row['SYMBOL'],echelle: int.parse(row['SYMBOL']!)));
+      classes.add(MTGScale(symbol: row['SYMBOL'],echelle: int.parse(row['SCALE']!)));
     }
     final description = result['description'] as Map<int, dynamic>;
-    for (final entry in description.entries) {
+    for (final entry in description.entries.skip(1)) {
       final row = entry.value as Map<String, String>;
         int? lim;
       if(row["MAX"]=="?"){
@@ -46,7 +46,7 @@ class Reader {
       }else{
         lim=int.parse(row["MAX"]!);
       }
-      descriptions.add(MTGDescription(parents:parseSymbols(row['LEFT']!, classes) ,enfants: parseSymbols(row['SYMBOL']!, classes), operation: row['RELTYPE'],limite: lim));
+      descriptions.add(MTGDescription(parents:parseSymbols(row['LEFT']!, classes) ,enfants: parseSymbols(row['RIGHT']!, classes), operation: row['RELTYPE'],limite: lim));
     }
     MTGNode? dernier_regle = null; 
     final mtgRow = result['mtg'] as Map<int, dynamic>;
@@ -92,7 +92,7 @@ class Reader {
   MTGAttributeType parseAttributeType(String rawType) {
     switch (rawType.trim().toUpperCase()) {
       case 'ALPHA':
-        return MTGAttributeType.String;
+        return MTGAttributeType.Int;
       case 'REAL':
         return MTGAttributeType.double;
       case 'BOOLEAN':
