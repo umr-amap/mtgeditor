@@ -1,8 +1,11 @@
+import 'package:backend_mtg/backend_mtg.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mtg_editor/features/liste_plantes/screens/list_plantes_screen.dart';
+import 'package:mtg_editor/features/topologie/screens/topology_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:mtg_editor/features/parametres/viewmodels/setting_view_model.dart';
 import 'package:mtg_editor/features/parametres/screens/mytheme.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MTG Editor',
       theme: context.watch<SettingViewModel>().isDark ? MyTheme.dark() : MyTheme.light(),
-      home: const ListPlantesScreen(),
+      home: TopologyScreen(tree: _exampleTree()),
     );
   }
 }

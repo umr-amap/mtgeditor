@@ -1,5 +1,5 @@
 import 'package:backend_mtg/backend_mtg.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class TopologyPainter extends CustomPainter {
   final List<MTGNode> nodes;

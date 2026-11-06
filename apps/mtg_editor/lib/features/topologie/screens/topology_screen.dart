@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:backend_mtg/backend_mtg.dart';
-
 import '../controllers/topology_controller.dart';
 import '../widgets/node_details_sheet.dart';
 import '../widgets/topology_canvas.dart';

@@ -1,6 +1,5 @@
 import 'package:backend_mtg/backend_mtg.dart';
-import 'package:flutter/material.dart';
-
+import 'package:material_ui/material_ui.dart';
 import '../widgets/dropdown_button_type.dart';
 
 class NodeCreationResult {
