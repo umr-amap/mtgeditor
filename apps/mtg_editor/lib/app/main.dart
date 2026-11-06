@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MTG Editor',
       theme: context.watch<SettingViewModel>().isDark ? MyTheme.dark() : MyTheme.light(),
-      home: TopologyScreen(tree: _exampleTree()),
+      home: const ListPlantesScreen(),
     );
   }
 }
