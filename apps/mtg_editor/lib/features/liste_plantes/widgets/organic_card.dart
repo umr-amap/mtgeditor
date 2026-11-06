@@ -1,11 +1,8 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:backend_mtg/backend_mtg.dart';
+import 'package:material_ui/material_ui.dart';
 
 class OrganicCard extends StatelessWidget {
-  const OrganicCard({
-    required this.organic,
-    super.key,
-  });
+  const OrganicCard({required this.organic, super.key});
 
   final Organic organic;
 
@@ -23,27 +20,16 @@ class OrganicCard extends StatelessWidget {
         child: Row(
           children: [
             if (imageUrl != null)
-              Image.network(
-                imageUrl,
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-              )
+              Image.network(imageUrl, width: 60, height: 60, fit: BoxFit.cover)
             else
-              const SizedBox(
-                width: 60,
-                height: 60,
-                child: Icon(Icons.park),
-              ),
+              const SizedBox(width: 60, height: 60, child: Icon(Icons.park)),
             const SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(organic.tag),
                 if (organic.latitude != null && organic.longitude != null)
-                  Text(
-                    '${organic.latitude}, ${organic.longitude}',
-                  ),
+                  Text('${organic.latitude}, ${organic.longitude}'),
               ],
             ),
           ],

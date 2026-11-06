@@ -73,7 +73,7 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
         index: _selectedIndex,
         children: [
           _buildPlantList(),
-          TabBarExample(onBackToPlants: _showPlantList),
+          TabBarScreen(onBackToPlants: _showPlantList),
           const EcranSettings(),
         ],
       ),
