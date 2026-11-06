@@ -5,13 +5,15 @@ import 'package:mtg_editor/features/parametres/viewmodels/setting_view_model.dar
 import 'package:mtg_editor/features/parametres/screens/mytheme.dart';
 import '../database/app_database.dart';
 
+AppDatabase database = AppDatabase();
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => SettingViewModel()),
     ],
-      child: MyApp(database: AppDatabase()),
+      child: MyApp(database: database),
     )
   );
 }

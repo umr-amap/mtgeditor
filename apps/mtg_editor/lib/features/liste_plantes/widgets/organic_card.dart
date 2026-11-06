@@ -1,21 +1,13 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:backend_mtg/backend_mtg.dart';
+import 'package:mtg_editor/database/app_database.dart';
 
 class OrganicCard extends StatelessWidget {
-  const OrganicCard({
-    required this.organic,
-    super.key,
-  });
+  const OrganicCard({required this.organic, super.key});
 
-  final Organic organic;
+  final OrganicEntry organic;
 
   @override
   Widget build(BuildContext context) {
-    final imageUrls = organic.imagesUrls ?? const <String>[];
-    final imageUrl = imageUrls.isNotEmpty
-        ? imageUrls.first
-        : null;
-
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       clipBehavior: Clip.antiAlias,
@@ -23,28 +15,14 @@ class OrganicCard extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Row(
           children: [
-            if (imageUrl != null)
-              Image.network(
-                imageUrl,
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-              )
-            else
-              const SizedBox(
-                width: 60,
-                height: 60,
-                child: Icon(Icons.park),
-              ),
+            const SizedBox(width: 60, height: 60, child: Icon(Icons.park)),
             const SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(organic.tag ?? ''),
-                if (organic.latitude != null && organic.longitude != null)
-                  Text(
-                    '${organic.latitude}, ${organic.longitude}',
-                  ),
+                Text(organic.name),
+                if (organic.species != null) Text(organic.species!),
+                Text('${organic.nodeCount} nœuds'),
               ],
             ),
           ],
@@ -52,4 +30,8 @@ class OrganicCard extends StatelessWidget {
       ),
     );
   }
+}
+
+extension OrganicEntryWidget on OrganicEntry {
+  Widget toWidget(BuildContext _) => OrganicCard(organic: this);
 }
