@@ -42,7 +42,9 @@ void main() {
         descriptions.first.getEnfants()!.map((scale) => scale.getSymbol()),
         ['Internode', 'Leaf'],
       );
-      expect(descriptions.every((description) => description.getLimite() == null), isTrue);
+      expect(
+          descriptions.every((description) => description.getLimite() == null),
+          isTrue);
     });
 
     test('lit les caractéristiques et leurs types MTG', () {
@@ -71,9 +73,9 @@ void main() {
       expect(
         nodes.map((node) => node.getId()).toList(),
         [
-          '/Scene0',
-          '/Individual0',
-          '/Axis0',
+          'Scene0',
+          'Individual0',
+          'Axis0',
           'Internode0',
           'Leaf0',
           'Internode1',
