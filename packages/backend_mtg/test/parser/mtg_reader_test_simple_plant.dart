@@ -71,9 +71,9 @@ void main() {
       expect(
         nodes.map((node) => node.getId()).toList(),
         [
-          'Scene0',
-          'Individual0',
-          'Axis0',
+          '/Scene0',
+          '/Individual0',
+          '/Axis0',
           'Internode0',
           'Leaf0',
           'Internode1',

@@ -51,7 +51,7 @@ class Reader {
     MTGNode? dernier_regle = null; 
     final mtgRow = result['mtg'] as Map<int, dynamic>;
     for (final entry in mtgRow.entries) {
-      final row = entry.value as Map<String, String>;
+      final row = entry.value as Map<String, String?>;
       final node = MTGNode(
         id: IdEntityCode(row['ENTITY-CODE']!)["id"],
         attributes: {},
@@ -63,11 +63,13 @@ class Reader {
         node.setParent(dernier_regle);
         dernier_regle=node;
       }else if(IdEntityCode(row['ENTITY-CODE']!)["regle"]!=null && dernier_regle==null){
-        node.setParent(nodes[0]);
+        node.setParent(null);
         dernier_regle=node;
+      }else if(nodes.isNotEmpty){
+          node.setParent(nodes.last);
       }else{
-        node.setParent(nodes[-1]);
-      }
+        node.setParent(null);
+      };
 
       for (final attribute in attributes) {
         final name = attribute.getName();
