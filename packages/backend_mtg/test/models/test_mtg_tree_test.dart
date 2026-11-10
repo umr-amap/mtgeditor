@@ -12,32 +12,44 @@ void main() {
       final root = MTGNode(id: 'root');
       final node = MTGNode(id: 'node');
       final description = MTGDescription(operation: 'branching');
+      final dateCreation = DateTime.utc(2025, 1, 1);
+      final dateModification = DateTime.utc(2025, 1, 2);
       final tree = MTGTree(
         scales: [scale],
         root: root,
         nodes: {'node': node},
         description: [description],
+        dateCreation: dateCreation,
+        dateModification: dateModification,
       );
 
       expect(tree.getScales(), [scale]);
       expect(tree.getRoot(), same(root));
       expect(tree.getNodes(), {'node': node});
       expect(tree.getDescriptions(), [description]);
+      expect(tree.getDateCreation(), dateCreation);
+      expect(tree.getDateModification(), dateModification);
 
       final newScale = MTGScale(symbol: 'B');
       final newRoot = MTGNode(id: 'new-root');
       final newNode = MTGNode(id: 'new-node');
       final newDescription = MTGDescription(operation: 'updated');
+      final newDateCreation = DateTime.utc(2025, 2, 1);
+      final newDateModification = DateTime.utc(2025, 2, 2);
       tree
         ..setScale([newScale])
         ..setRoot(newRoot)
         ..setNodes({'new-node': newNode})
-        ..setDescriptions([newDescription]);
+        ..setDescriptions([newDescription])
+        ..setDateCreation(newDateCreation)
+        ..setDateModification(newDateModification);
 
       expect(tree.getScales(), [newScale]);
       expect(tree.getRoot(), same(newRoot));
       expect(tree.getNodes(), {'new-node': newNode});
       expect(tree.getDescriptions(), [newDescription]);
+      expect(tree.getDateCreation(), newDateCreation);
+      expect(tree.getDateModification(), newDateModification);
     });
 
     test('adds and removes scales by symbol', () {

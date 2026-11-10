@@ -4,18 +4,25 @@ import './mtg_description.dart' ;
 
 /// Regroupe les échelles, descriptions et nœuds d'un modèle MTG.
 class MTGTree {
+  String? _id;
   List<MTGScale>? _scales;
   MTGNode? _root;
   Map<String, MTGNode>? _nodes;
   List<MTGDescription>? _descriptions;
+  DateTime? _dateModification;
+  DateTime? _dateCreation;
 
   /// Crée un arbre avec ses collections et sa racine éventuelles.
-  MTGTree({List<MTGScale>? scales, MTGNode? root, Map<String, MTGNode>? nodes, List<MTGDescription>? description}){
+  MTGTree({List<MTGScale>? scales, MTGNode? root, Map<String, MTGNode>? nodes, List<MTGDescription>? description, DateTime? dateModification, DateTime? dateCreation}){
     this._scales = scales;
     this._root = root;
     this._nodes = nodes;
     this._descriptions = description;
+    this._dateModification = dateModification;
+    this._dateCreation = dateCreation;
   }
+  String? getId() => this._id;
+  setId(String? value) => this._id = value;
 
   /// Renvoie les échelles de l'arbre.
   List<MTGScale>? getScales() => this._scales;
@@ -40,6 +47,18 @@ class MTGTree {
 
   /// Remplace la liste des descriptions.
   setDescriptions(List<MTGDescription>? value) => this._descriptions = value;
+
+  /// Renvoie la date de modification de l'arbre.
+  DateTime? getDateModification() => this._dateModification;
+
+  /// Définit la date de modification de l'arbre.
+  setDateModification(DateTime? value) => this._dateModification = value;
+
+  /// Renvoie la date de création de l'arbre.
+  DateTime? getDateCreation() => this._dateCreation;
+
+  /// Définit la date de création de l'arbre.
+  setDateCreation(DateTime? value) => this._dateCreation = value;
 
   /// Ajoute une échelle à la liste, en créant celle-ci si besoin.
   addScale(MTGScale scale) {
