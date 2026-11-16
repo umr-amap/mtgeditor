@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/services.dart';
+import 'package:heif_converter/heif_converter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mtg_editor/features/creation/widgets/map.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -72,39 +74,86 @@ class _MyFormState extends State<ProprieteView> {
     });
   }
 
-  Future<void> _addFromGallery() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null && mounted) {
-      final mimeType = pickedFile.mimeType;
-      if (mimeType == null || !mimeType.startsWith('image/')) {
-        await showDialog<void>(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Type de fichier incorrect'),
-              content: const Text('Veuillez sélectionner une image.'),
-              actions: <Widget>[
-                ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-        return;
-      }
+Future<void> _showImageError(String message) async {
+  await showDialog<void>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Image non valide'),
+        content: Text(message),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+}
 
-      final bytes = await pickedFile.readAsBytes();
-      if (!mounted) {
-        return;
-      }
+Future<void> _addFromGallery() async {
+  final pickedFile = await _picker.pickImage(
+    source: ImageSource.gallery,
+  );
 
-      setState(() {
-        _images.add(bytes);
-      });
-    }
+  if (pickedFile == null || !mounted) {
+    return;
   }
+
+  try {
+    final fileName = pickedFile.name.toLowerCase();
+    Uint8List bytes;
+
+    final isHeif = fileName.endsWith('.heic') ||
+        fileName.endsWith('.heif');
+
+    if (isHeif) {
+      final convertedPath = await HeifConverter.convert(
+        pickedFile.path,
+        format: 'jpg',
+      );
+
+      if (convertedPath == null) {
+        throw Exception('La conversion HEIF a échoué.');
+      }
+
+      bytes = await XFile(convertedPath).readAsBytes();
+    } else {
+      final mimeType = pickedFile.mimeType;
+
+      if (mimeType != null && !mimeType.startsWith('image/')) {
+        throw Exception('Le fichier sélectionné n’est pas une image.');
+      }
+
+      bytes = await pickedFile.readAsBytes();
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _images.add(bytes);
+    });
+  } on PlatformException catch (error) {
+    if (!mounted) {
+      return;
+    }
+
+    await _showImageError(
+      'La conversion de l’image a échoué : ${error.message ?? error.code}',
+    );
+  } catch (error) {
+    if (!mounted) {
+      return;
+    }
+
+    await _showImageError(
+      'Impossible de charger cette image : $error',
+    );
+  }
+  j}
 
   Future<void> _addNewPhoto() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
