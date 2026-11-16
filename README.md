@@ -52,3 +52,12 @@
 
         - Générer le coverage en mode terminal
           lcov --summary coverage/lcov.info
+
+## LANCER L'APP EN MODE TERMINAL POUR LE BACKEND
+
+- Avoir une version de dart sur l'environnement
+- Aller dans le repertoire packages/backend_mtg
+- Installer les dépendances nécessaire avec "dart pub get"
+
+- Lancer l'app avec "dart run bin\app_backend_terminal.dart"
+

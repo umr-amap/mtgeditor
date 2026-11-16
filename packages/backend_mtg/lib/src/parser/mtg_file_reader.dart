@@ -5,14 +5,15 @@ import '../models/mtg_description.dart';
 import '../models/mtg_node.dart';
 import '../models/mtg_scale.dart';
 import 'mtg_parser.dart';
-
+/// Lit un fichier MTG et construit les objets correspondant à ses données.
 class Reader {
   final String path;
 
   const Reader({
     required this.path,
   });
-
+/// Lit et analyse le fichier, puis renvoie les nœuds, classes,
+/// descriptions et attributs sous forme de listes.
   Future<Map<String, dynamic>> read() async {
     final lines = await File(path).readAsLines();
 
@@ -94,7 +95,8 @@ class Reader {
       'features': attributes,
     };
   }
-
+/// Convertit un nom de type MTG en type d'attribut.
+/// Lève une [FormatException] si le type n'est pas pris en charge.
   MTGAttributeType parseAttributeType(String rawType) {
     switch (rawType.trim().toUpperCase()) {
       case 'ALPHA':
@@ -109,7 +111,7 @@ class Reader {
         throw FormatException('Type MTG non pris en charge : $rawType');
     }
   }
-
+/// Renvoie les classes dont le symbole est présent dans [symbol].
   List<MTGScale> parseSymbols(String symbol, List<MTGScale> classes) {
     List<MTGScale> result = [];
     for (MTGScale c in classes) {
@@ -119,7 +121,8 @@ class Reader {
     }
     return result;
   }
-
+/// Sépare le code d'entité en identifiant, connexion éventuelle
+/// et indicateur de règle.
   ({String id, String? connexion, bool hasRule}) _parseEntityCode(
     String entityCode,
   ) {
