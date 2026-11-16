@@ -1,4 +1,4 @@
-# COMPTE RENDU VISIO 13/10/2026
+# COMPTE RENDU VISIO 3/11/2026
 
 ## Présentation du frontend
 > Dans cette partie nous avons présenté l'intégralité du travail réalisé sur le frontend. L'objectif est d'avoir un retour du client afin d'améliorer l'application, voici ce que nous avons présenté avec un avis favorable du client
