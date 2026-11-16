@@ -1,3 +1,4 @@
+/// Analyse les lignes d'un fichier MTG et extrait ses différentes sections.
 class MTGParser {
   List<String> lines;
   int index = 0;
@@ -10,6 +11,8 @@ class MTGParser {
   Map<int, dynamic> features = {};
   Map<int, dynamic> mtg = {};
   String code = "";
+/// Parcourt les lignes et renvoie les données analysées dans une map
+/// contenant les sections MTG, CLASSES, DESCRIPTION, FEATURES et CODE.
   Map<String, dynamic> parseMtgFile() {
     while (index < lines.length) {
       String currentLine = lines[index].trim();
@@ -80,7 +83,8 @@ class MTGParser {
       'code': code,
     };
   }
-
+/// Indique si [line] est l'en-tête de la section [section].
+/// Renvoie `false` si aucun nom de section n'est fourni.
   bool isSection(String line, [String? section]) {
     if (section != null) {
       switch (section) {
@@ -107,7 +111,8 @@ class MTGParser {
     }
     return false;
   }
-
+/// Analyse une section tabulaire à partir de [index], en associant chaque
+/// valeur à son en-tête, puis renvoie les lignes analysées et l'index suivant.
   bool isAnySection(String line) {
     const sections = ['CODE', 'CLASSES', 'DESCRIPTION', 'FEATURES', 'MTG'];
     return sections.any((section) => isSection(line.trim(), section));
@@ -162,7 +167,8 @@ class MTGParser {
 
     return (lignes, index);
   }
-
+/// Analyse les lignes de la section MTG et renvoie les entités avec leurs
+/// attributs ; les valeurs d'attribut vides sont représentées par `null`.
   (Map<int, Map<String, String?>>, int) parseMtg(int index) {
     final result = <int, Map<String, String?>>{};
 

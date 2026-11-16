@@ -6,6 +6,9 @@ import '../models/mtg_node.dart';
 import '../models/mtg_scale.dart';
 import '../models/mtg_tree.dart';
 
+/// Sérialise l'arbre MTG dans un fichier, avec les sections CLASSES,
+/// DESCRIPTION, FEATURES et MTG.
+/// Les attributs déclarés dans FEATURES sont ceux du nœud racine.
 Future<void> write(MTGTree tree,nomfichier) async{
   // mise en place des headers statiques
   String classes="CLASSES: \nSYMBOL\tSCALE\tDECOMPOSITION\tINDEXATION\tDEFINITION \n";
@@ -52,7 +55,9 @@ Future<void> write(MTGTree tree,nomfichier) async{
   await File(nomfichier).writeAsString(contenu);
   
 }
-
+  /// Génère le texte du nœud et de ses descendants.
+  /// [tab] indique le niveau d'indentation ; une connexion différente de `+`
+  /// ajoute le préfixe `^` à la ligne du nœud.
 String writeContentMtg(int tab, MTGNode node) {
   if (tab < 0) {
     throw ArgumentError.value(tab, 'tab', 'Ne peut pas être négatif');
@@ -92,6 +97,8 @@ String writeContentMtg(int tab, MTGNode node) {
 
   return content;
 }
+/// Convertit un type d'attribut MTG en nom de type utilisé dans le fichier.
+/// Renvoie une chaîne vide si le type est nul.
 String mtgType(MTGAttributeType? t){
   if (t == null) return "" ;
   switch (t) {
