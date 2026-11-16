@@ -1,13 +1,16 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:mtg_editor/database/app_database.dart';
 import './mytheme.dart';
 import '../viewmodels/setting_view_model.dart';
 import 'archive.dart';
 import 'guide_utilisateur.dart';
 
 class EcranSettings extends StatelessWidget {
-  const EcranSettings({super.key});
+  const EcranSettings({required this.database, super.key});
+
+  final AppDatabase database;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +63,7 @@ class EcranSettings extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute<void>(
-                        builder: (context) => const ArchiveApp(),
+                        builder: (context) => ArchiveApp(database: database),
                       ),
                     );
                   },

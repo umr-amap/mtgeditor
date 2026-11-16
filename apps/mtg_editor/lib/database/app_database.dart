@@ -109,6 +109,10 @@ class AppDatabase extends _$AppDatabase {
     return (delete(organics)..where((row) => row.id.equals(id))).go();
   }
 
+  Future<int> restoreOrganic(OrganicEntry organic) {
+    return into(organics).insertOnConflictUpdate(organic.toCompanion(false));
+  }
+
   static String? _normalizeSpecies(String? species) {
     final normalized = species?.trim();
     return normalized == null || normalized.isEmpty ? null : normalized;

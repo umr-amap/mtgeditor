@@ -1,13 +1,16 @@
-import 'package:backend_mtg/backend_mtg.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:mtg_editor/features/parametres/screens/archive.dart';
+import 'package:mtg_editor/database/app_database.dart';
 import 'package:mtg_editor/features/liste_plantes/widgets/organic_card.dart';
 import 'package:mtg_editor/features/liste_plantes/widgets/plant_search_bar.dart';
 import 'package:mtg_editor/features/creation/screens/create_plant.dart';
 import 'package:mtg_editor/features/parametres/screens/parametre.dart';
 
 class ListPlantesScreen extends StatefulWidget {
-  const ListPlantesScreen({super.key});
+  const ListPlantesScreen({super.key, required this.database});
+
+  final AppDatabase database;
 
   @override
   State<ListPlantesScreen> createState() => _ListPlantesScreenState();
@@ -15,12 +18,13 @@ class ListPlantesScreen extends StatefulWidget {
 
 class _ListPlantesScreenState extends State<ListPlantesScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final List<Organic> _plantes = [
-    Organic(tag: 'Plante 1'),
-    Organic(tag: 'Plante 2'),
-  ];
   String _searchQuery = '';
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _showPlantList() {
     setState(() => _selectedIndex = 0);
@@ -38,14 +42,61 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
     });
   }
 
-  List<Organic> get _filteredPlants {
-    if (_searchQuery.isEmpty) {
-      return _plantes;
-    }
+  Widget _buildPlantList() {
+    return SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: PlantSearchBar(
+              controller: _searchController,
+              onChanged: _filterPlants,
+            ),
+          ),
+          Expanded(
+            child: StreamBuilder<List<OrganicEntry>>(
+              stream: widget.database.watchOrganics(searchQuery: _searchQuery),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      'Impossible de charger les plantes : ${snapshot.error}',
+                    ),
+                  );
+                }
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-    return _plantes
-        .where((plant) => plant.tag.toLowerCase().contains(_searchQuery))
-        .toList();
+                final plants = snapshot.data!;
+                if (plants.isEmpty) {
+                  return const Center(child: Text('Aucune plante trouvée'));
+                }
+
+                return ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: plants.length,
+                  itemBuilder: (context, index) {
+                    return Dismissible(
+                      key: UniqueKey(),
+                      background: Container(
+                        color: Colors.redAccent,
+                        child: const Icon(Icons.delete),
+                      ),
+                      child: plants[index].toWidget(context),
+                      onDismissed: (DismissDirection direction) {
+                        widget.database.deleteOrganic(plants[index].id);
+                        ArchiveApp.add(plants[index]);
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -73,37 +124,8 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
         index: _selectedIndex,
         children: [
           _buildPlantList(),
-          TabBarExample(onBackToPlants: _showPlantList),
-          const EcranSettings(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPlantList() {
-    final filteredPlants = _filteredPlants;
-
-    return SafeArea(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: PlantSearchBar(
-              controller: _searchController,
-              onChanged: _filterPlants,
-            ),
-          ),
-          Expanded(
-            child: filteredPlants.isEmpty
-                ? const Center(child: Text('Aucune plante trouvée'))
-                : ListView.builder(
-                    padding: const EdgeInsets.all(8),
-                    itemCount: filteredPlants.length,
-                    itemBuilder: (context, index) {
-                      return OrganicCard(organic: filteredPlants[index]);
-                    },
-                  ),
-          ),
+          TabBarScreen(onBackToPlants: _showPlantList),
+          EcranSettings(database: widget.database),
         ],
       ),
     );
