@@ -1,5 +1,5 @@
 name: backend_mtg
-description: Backend models and MTG parsing utilities.
+description: Backend models and MTG file parsing.
 version: 1.0.0
 publish_to: none
 

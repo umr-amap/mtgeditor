@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 
+import 'package:backend_mtg/src/models/mtg_attribute.dart';
 import 'package:backend_mtg/src/models/mtg_node.dart';
 import 'package:backend_mtg/src/models/mtg_scale.dart';
 
@@ -76,6 +77,40 @@ void main() {
 
       expect(() => node.supDescendant(MTGNode(id: 'missing')), returnsNormally);
       expect(node.getDescendants(), isNull);
+    });
+
+    test('stores and updates its attributes', () {
+      final height = MTGAttribute(name: 'height');
+      final diameter = MTGAttribute(name: 'diameter');
+      final node = MTGNode(attributes: {height: 180});
+
+      expect(node.getAttributes(), {height: 180});
+
+      node.setAttributes({diameter: 12.5});
+      expect(node.getAttributes(), {height: 180, diameter: 12.5});
+    });
+
+    test('adds and removes attributes', () {
+      final height = MTGAttribute(name: 'height');
+      final diameter = MTGAttribute(name: 'diameter');
+      final node = MTGNode(attributes: {});
+
+      node.addAttribute(height);
+      node.addAttribute(diameter);
+      expect(node.getAttributes(), {height: null, diameter: null});
+
+      node.supAttribute(height);
+      expect(node.getAttributes(), {diameter: null});
+    });
+
+    test('removing an attribute is safe when the map is null', () {
+      final node = MTGNode();
+
+      expect(
+        () => node.supAttribute(MTGAttribute(name: 'missing')),
+        returnsNormally,
+      );
+      expect(node.getAttributes(), isNull);
     });
   });
 }
