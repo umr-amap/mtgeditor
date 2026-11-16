@@ -9,6 +9,9 @@
 ## Maquette de l'application  
  [Figma](https://www.figma.com/design/dHv55YwCSlYOFtGL53j3P3/CIRAD-ETUdiant?node-id=4-540&t=lvdQ6Yk2dqfYwPox-1)
 
+## Maquette du backend
+![img](./documentation/backend/model/diagramme_uml_modele_backend_v1.png)
+
 ## LANCER LES TESTS DU BACKEND
 
     - Commencer par se mettre dans le répertoire mtgeditor/packages/backend_mtg
