@@ -102,4 +102,11 @@ class MTGNode {
   void supAttribute(MTGAttribute attribute) {
       this._attributes?.remove(attribute);
   }
+
+    /// Remplace la map complète des attributs du nœud.
+  void replaceAttributes(Map<MTGAttribute, dynamic>? value) {
+    _attributes = value == null
+        ? null
+        : Map<MTGAttribute, dynamic>.from(value);
+  }
 }
