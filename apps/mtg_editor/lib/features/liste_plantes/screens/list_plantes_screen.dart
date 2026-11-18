@@ -8,6 +8,10 @@ import 'package:mtg_editor/features/creation/screens/create_plant.dart';
 import 'package:mtg_editor/features/parametres/screens/parametre.dart';
 
 class ListPlantesScreen extends StatefulWidget {
+  /// Créer un [StatefulWidget] pour instancier des
+  ///
+  /// [State]
+  /// Page Principale: Liste des Plantes
   const ListPlantesScreen({super.key, required this.database});
 
   final AppDatabase database;
@@ -54,6 +58,7 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
             ),
           ),
           Expanded(
+            /// Écoute les flux de la base de données
             child: StreamBuilder<List<OrganicEntry>>(
               stream: widget.database.watchOrganics(searchQuery: _searchQuery),
               builder: (context, snapshot) {
@@ -123,9 +128,9 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
       body: IndexedStack(
         index: _selectedIndex,
         children: [
-          _buildPlantList(),
-          TabBarScreen(onBackToPlants: _showPlantList),
-          EcranSettings(database: widget.database),
+          _buildPlantList(), // Page 1
+          TabBarScreen(onBackToPlants: _showPlantList), // Page 2
+          EcranSettings(database: widget.database), // Page 3
         ],
       ),
     );
