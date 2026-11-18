@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:mtg_editor/features/parametres/screens/mytheme.dart';
 
 class TemplateView extends StatefulWidget {
-  final VoidCallback onContinue;
+  final ValueChanged<String> onContinue;
 
   const TemplateView({super.key, required this.onContinue});
 
@@ -21,7 +21,7 @@ class _MyFormState extends State<TemplateView> {
     }
 
     debugPrint('Échelle de la plante: ${formState.value['typeEchelle']}');
-    widget.onContinue();
+    widget.onContinue(formState.value['typeEchelle'] as String);
   }
 
   @override
@@ -47,9 +47,7 @@ class _MyFormState extends State<TemplateView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 16.0),
-              const Text(
-                'Échelle de la plante',
-              ),
+              const Text('Échelle de la plante'),
               const SizedBox(height: 8),
               FormBuilderDropdown<String>(
                 name: 'typeEchelle',

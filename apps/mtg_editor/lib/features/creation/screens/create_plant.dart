@@ -1,7 +1,10 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:backend_mtg/backend_mtg.dart';
+import 'package:mtg_editor/database/app_database.dart';
 
 import '../widgets/template.dart';
 import '../widgets/propriete.dart';
+import '../../topologie/screens/topology_screen.dart';
 
 void main() => runApp(const PlantCreateApp());
 
@@ -10,13 +13,14 @@ class PlantCreateApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const TabBarScreen();
+    return TabBarScreen(database: AppDatabase());
   }
 }
 
 class TabBarScreen extends StatefulWidget {
-  const TabBarScreen({super.key, this.onBackToPlants});
+  const TabBarScreen({super.key, required this.database, this.onBackToPlants});
 
+  final AppDatabase database;
   final void Function()? onBackToPlants;
 
   @override
@@ -27,6 +31,15 @@ class TabBarScreen extends StatefulWidget {
 /// [TickerProviderStateMixin].
 class _TabBarState extends State<TabBarScreen> {
   int _selectedTab = 0;
+  String? _scale;
+  String? _plantName;
+  late final MTGTree _tree;
+
+  @override
+  void initState() {
+    super.initState();
+    _tree = MTGTree();
+  }
 
   void _goToNextTab() {
     if (_selectedTab < 2) {
@@ -48,6 +61,26 @@ class _TabBarState extends State<TabBarScreen> {
       } else {
         Navigator.pop(context);
       }
+    }
+  }
+
+  void _selectTab(int index) {
+    if (index <= _selectedTab) {
+      setState(() => _selectedTab = index);
+    }
+  }
+
+  Future<void> _savePlant() async {
+    final name = _plantName;
+    if (name == null || name.trim().isEmpty || _scale == null) {
+      return;
+    }
+
+    await widget.database.saveOrganic(name: name, mtgTree: _tree);
+    if (!mounted) return;
+    widget.onBackToPlants?.call();
+    if (widget.onBackToPlants == null) {
+      Navigator.pop(context);
     }
   }
 
@@ -93,11 +126,32 @@ class _TabBarState extends State<TabBarScreen> {
               child: IndexedStack(
                 index: _selectedTab,
                 children: [
-                  TemplateView(onContinue: _goToNextTab),
-                  ProprieteView(onContinue: _goToNextTab),
-                  Center(
-                    child: Text('La topologie sera disponible prochainement.'),
+                    TemplateView(
+                    onContinue: (scale) {
+                      _scale = scale;
+                      _goToNextTab();
+                    },
                   ),
+                  ProprieteView(
+                    onContinue: (name) {
+                      _plantName = name;
+                      final root = MTGNode(
+                        id: name.trim(),
+                        scale: MTGScale(symbol: _scale),
+                      );
+                      _tree
+                        ..setRoot(root)
+                        ..setNodes({root.getId()!: root});
+                      _goToNextTab();
+                    },
+                  ),
+                  _plantName == null
+                      ? const Center(
+                          child: Text(
+                            'Renseignez le nom de la plante pour continuer.',
+                          ),
+                        )
+                      : TopologyScreen(tree: _tree, onSave: _savePlant),
                 ],
               ),
             ),
@@ -114,6 +168,7 @@ class _TabBarState extends State<TabBarScreen> {
 
     return Expanded(
       child: InkWell(
+        onTap: isActive ? () => _selectTab(index) : null,
         borderRadius: BorderRadius.circular(8.0),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),

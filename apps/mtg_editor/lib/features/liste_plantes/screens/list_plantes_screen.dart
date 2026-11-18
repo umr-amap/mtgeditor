@@ -20,6 +20,7 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   int _selectedIndex = 0;
+  int _creationVersion = 0;
 
   @override
   void initState() {
@@ -28,6 +29,13 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
 
   void _showPlantList() {
     setState(() => _selectedIndex = 0);
+  }
+
+  void _startPlantCreation() {
+    setState(() {
+      _creationVersion++;
+      _selectedIndex = 1;
+    });
   }
 
   @override
@@ -104,7 +112,13 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
+        onTap: (index) {
+          if (index == 1) {
+            _startPlantCreation();
+            return;
+          }
+          setState(() => _selectedIndex = index);
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Symbols.psychiatry, size: 24),
@@ -124,7 +138,13 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
         index: _selectedIndex,
         children: [
           _buildPlantList(),
-          TabBarScreen(onBackToPlants: _showPlantList),
+          KeyedSubtree(
+            key: ValueKey(_creationVersion),
+            child: TabBarScreen(
+              database: widget.database,
+              onBackToPlants: _showPlantList,
+            ),
+          ),
           EcranSettings(database: widget.database),
         ],
       ),
