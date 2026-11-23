@@ -84,14 +84,9 @@
 
 
 
-# MTG Editor — Guide de lancement et de test
+# Application — Guide de lancement
 
-Ce guide explique comment démarrer l'application **MTG Editor** en local pour la tester, soit via **Docker** (recommandé, aucune installation de Flutter requise), soit directement depuis **VS Code**.
-
----
-
-## Méthode 1 : Lancement rapide via Docker
-
+Ce guide explique comment démarrer l'application **MTG Editor** via **Docker**.
 Cette méthode rend disponible l'application web dans un conteneur.
 
 ### Prérequis
