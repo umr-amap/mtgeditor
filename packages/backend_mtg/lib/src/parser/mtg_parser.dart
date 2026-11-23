@@ -113,11 +113,14 @@ class MTGParser {
   }
 /// Analyse une section tabulaire à partir de [index], en associant chaque
 /// valeur à son en-tête, puis renvoie les lignes analysées et l'index suivant.
+/// [line] lit la ligne pour pour savoir si c'est un section n'importe
   bool isAnySection(String line) {
     const sections = ['CODE', 'CLASSES', 'DESCRIPTION', 'FEATURES', 'MTG'];
     return sections.any((section) => isSection(line.trim(), section));
   }
-
+///permet de lire un section d'un fichier mtg autre que la section "MTG"
+///[index]la ligne
+///
   (Map<int, Map<String, String>>, int) parseSection(
       List<String> header, int index,
       [String? section]) {
@@ -169,6 +172,7 @@ class MTGParser {
   }
 /// Analyse les lignes de la section MTG et renvoie les entités avec leurs
 /// attributs ; les valeurs d'attribut vides sont représentées par `null`.
+/// [index] la ligne du fichier
   (Map<int, Map<String, String?>>, int) parseMtg(int index) {
     final result = <int, Map<String, String?>>{};
 
