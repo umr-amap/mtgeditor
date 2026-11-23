@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:backend_mtg/backend_mtg.dart';
+
 import '../controllers/topology_controller.dart';
 import '../widgets/node_details_sheet.dart';
 import '../widgets/topology_canvas.dart';
@@ -9,8 +10,9 @@ import 'node_modification_screen.dart';
 
 class TopologyScreen extends StatefulWidget {
   final MTGTree tree;
+  final Future<void> Function()? onSave;
 
-  const TopologyScreen({super.key, required this.tree});
+  const TopologyScreen({super.key, required this.tree, this.onSave});
 
   @override
   State<TopologyScreen> createState() => _TopologyScreenState();
@@ -104,6 +106,11 @@ class _TopologyScreenState extends State<TopologyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final rootId = widget.tree.getRoot()?.getId();
+    if (rootId != null && !_controller.positions.containsKey(rootId)) {
+      _controller.layoutNodes();
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Topologie MTG')),
       body: Column(
@@ -144,6 +151,18 @@ class _TopologyScreenState extends State<TopologyScreen> {
                           : () => _controller.removeNode(selected),
                       visible: selected != null,
                     ),
+                    if (widget.onSave != null)
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: FilledButton.icon(
+                            onPressed: widget.onSave,
+                            icon: const Icon(Icons.save),
+                            label: const Text('Enregistrer la plante'),
+                          ),
+                        ),
+                      ),
                   ],
                 );
               },
