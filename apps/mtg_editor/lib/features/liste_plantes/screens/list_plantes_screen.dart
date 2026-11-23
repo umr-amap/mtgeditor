@@ -104,6 +104,7 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
     );
   }
 
+  /// Page BottomNavigation pour naviger à travers les trois grandes pages de l'application
   @override
   Widget build(BuildContext context) {
     return Scaffold(
