@@ -1,5 +1,22 @@
 # Application de mesure de plante - CIRAD
+
+## Sommaire
+
+- [Contributeurs](#contributeurs)
+  - [IUT Orléans](#iut-orléans)
+- [Maquette de l'application](#maquette-de-lapplication)
+- [Lancer les tests du backend](#lancer-les-tests-du-backend)
+- [Lancer l'app en mode terminal pour le backend](#lancer-lapp-en-mode-terminal-pour-le-backend)
+- [MTG Editor — Guide de lancement et de test](#mtg-editor--guide-de-lancement-et-de-test)
+  - [Méthode 1 : Lancement rapide via Docker](#méthode-1--lancement-rapide-via-docker)
+    - [Prérequis](#prérequis)
+    - [Étapes de lancement](#étapes-de-lancement)
+    - [Tester l'affichage mobile depuis un émulateur](#tester-laffichage-mobile-depuis-un-émulateur)
+    - [Arrêter l'application](#arrêter-lapplication)
+    - [Notes](#notes)
+
 ## Contributeurs
+
 ### IUT Orléans
 - Nicolas CAMERA
 - Titouan GUERRIER
@@ -61,3 +78,46 @@
 
 - Lancer l'app avec "dart run bin\app_backend_terminal.dart"
 
+
+
+
+
+
+
+# MTG Editor — Guide de lancement et de test
+
+Ce guide explique comment démarrer l'application **MTG Editor** en local pour la tester, soit via **Docker** (recommandé, aucune installation de Flutter requise), soit directement depuis **VS Code**.
+
+---
+
+## Méthode 1 : Lancement rapide via Docker
+
+Cette méthode rend disponible l'application web dans un conteneur.
+
+### Prérequis
+**Docker** installé et **démarré**.
+
+### Étapes de lancement
+1. Ouvrir un terminal à la racine du dépôt `mtgeditor`.
+2. Construire et démarrer le conteneur :
+   ```bash
+   docker compose up --build
+   ```
+   *(Lors des lancements suivants, si le code n'a pas été modifié, la commande `docker compose up` suffit.)*
+3. Une fois le serveur démarré, ouvrir l'application dans un navigateur web à l'adresse :
+   **http://localhost:8080**
+
+### Tester l'affichage mobile depuis un émulateur
+* **Via les outils développeur du navigateur :** Ouvrir `http://localhost:8080`, appuyer sur `F12` puis activer le mode appareil mobile.
+
+![alt text](/images_readme/app_web.png)
+
+### Arrêter l'application
+Appuyer sur `Ctrl + C` dans le terminal, puis nettoyer le conteneur avec :
+```bash
+docker compose down
+```
+
+### Notes
+
+* **Sauvegarde des données :** En version web la base de données ne fonctionne pas, les plantes ne sont donc pas conservées.
