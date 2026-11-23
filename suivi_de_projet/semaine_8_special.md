@@ -1,4 +1,4 @@
-# Suivi de projet semaine 7 (2/11/2026 à 6/11/2026)
+# Suivi de projet semaine 8 (2/11/2026 à 6/11/2026)
 
 ## Tâches réalisées 
 - Backend
@@ -8,4 +8,6 @@
 
 - Front
     - Botom navigation bar
-    - graphique topologique
+    - Graphique topologique
+    - Lien avec le backend
+    - Autres pages de l'app
