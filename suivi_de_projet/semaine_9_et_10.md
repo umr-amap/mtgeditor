@@ -1,4 +1,4 @@
-# Suivi de projet semaine 8 et 9 (9/11/2026 à 20/11/2026)
+# Suivi de projet semaine 9 et 10 (9/11/2026 à 20/11/2026)
 ## Tâches réalisées
     - Traitement MTG
     - Test
