@@ -1,0 +1,7 @@
+.git
+**/.dart_tool
+**/build
+**/.gradle
+**/ios/Pods
+**/macos/Pods
+.DS_Store
