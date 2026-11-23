@@ -10,6 +10,7 @@ class ArchiveApp extends StatefulWidget {
   static final Map<DateTime, OrganicEntry> mapArchive =
       <DateTime, OrganicEntry>{};
 
+  /// Ajoute la date actuelle de [organic]
   static void add(OrganicEntry organic) {
     mapArchive[DateTime.now()] = organic;
   }
@@ -41,6 +42,7 @@ class _ArchiveAppState extends State<ArchiveApp> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    /// Bouton pour réstaurer la plante dans la liste de plante
                     TextButton(
                       child: const Text('RÉCUPÉRER'),
                       onPressed: () async {
@@ -52,6 +54,7 @@ class _ArchiveAppState extends State<ArchiveApp> {
                       },
                     ),
                     const SizedBox(width: 8),
+                    /// Bouton pour supprimer la plante définitivement
                     TextButton(
                       child: const Text('SUPPRIMER'),
                       onPressed: () {
@@ -71,6 +74,8 @@ class _ArchiveAppState extends State<ArchiveApp> {
     );
   }
 
+  /// Transfère le type DateTime en String
+  /// @date Format DateTime
   static String _formatDate(DateTime date) {
     String twoDigits(int value) => value.toString().padLeft(2, '0');
 

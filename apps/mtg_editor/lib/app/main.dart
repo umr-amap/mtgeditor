@@ -13,6 +13,7 @@ AppDatabase database = AppDatabase();
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
+    /// Mise en place d'un MultiProvider pour une éventuelle multiplication de Provider.
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => SettingViewModel()),
     ],
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
   const MyApp({required this.database, super.key});
 
   final AppDatabase database;
-  // This widget is the root of your application.
+  /// This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,18 +35,4 @@ class MyApp extends StatelessWidget {
       home: ListPlantesScreen(database: database),
     );
   }
-}
-
-MTGTree _exampleTree() {
-  final scale = MTGScale(symbol: 'M');
-  final root = MTGNode(id: 'P', scale: scale);
-  final trunk = MTGNode(id: 'Métamère 1', scale: scale, connexion: '<');
-  final branch = MTGNode(id: 'Métamère 2', scale: scale, connexion: '+');
-  root.addDescendant(trunk, connexion: '<');
-  root.addDescendant(branch, connexion: '+');
-
-  return MTGTree(
-    root: root,
-    nodes: {'P': root, 'Métamère 1': trunk, 'Métamère 2': branch},
-  );
 }
