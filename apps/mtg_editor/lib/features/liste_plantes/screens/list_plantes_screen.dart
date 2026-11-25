@@ -8,6 +8,10 @@ import 'package:mtg_editor/features/creation/screens/create_plant.dart';
 import 'package:mtg_editor/features/parametres/screens/parametre.dart';
 
 class ListPlantesScreen extends StatefulWidget {
+  /// Créer un [StatefulWidget] pour instancier des
+  ///
+  /// [State]
+  /// Page Principale: Liste des Plantes
   const ListPlantesScreen({super.key, required this.database});
 
   final AppDatabase database;
@@ -20,6 +24,7 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   int _selectedIndex = 0;
+  int _creationVersion = 0;
 
   @override
   void initState() {
@@ -28,6 +33,13 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
 
   void _showPlantList() {
     setState(() => _selectedIndex = 0);
+  }
+
+  void _startPlantCreation() {
+    setState(() {
+      _creationVersion++;
+      _selectedIndex = 1;
+    });
   }
 
   @override
@@ -54,6 +66,7 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
             ),
           ),
           Expanded(
+            /// Écoute les flux de la base de données
             child: StreamBuilder<List<OrganicEntry>>(
               stream: widget.database.watchOrganics(searchQuery: _searchQuery),
               builder: (context, snapshot) {
@@ -99,12 +112,19 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
     );
   }
 
+  /// Page BottomNavigation pour naviger à travers les trois grandes pages de l'application
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
+        onTap: (index) {
+          if (index == 1) {
+            _startPlantCreation();
+            return;
+          }
+          setState(() => _selectedIndex = index);
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Symbols.psychiatry, size: 24),
@@ -124,7 +144,13 @@ class _ListPlantesScreenState extends State<ListPlantesScreen> {
         index: _selectedIndex,
         children: [
           _buildPlantList(),
-          TabBarScreen(onBackToPlants: _showPlantList),
+          KeyedSubtree(
+            key: ValueKey(_creationVersion),
+            child: TabBarScreen(
+              database: widget.database,
+              onBackToPlants: _showPlantList,
+            ),
+          ),
           EcranSettings(database: widget.database),
         ],
       ),

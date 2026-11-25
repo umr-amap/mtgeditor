@@ -14,7 +14,7 @@ class EcranSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // On écoute les changements du ViewModel
+    /// On écoute les changements du ViewModel
     final settingsViewModel = context.watch<SettingViewModel>();
     final bool isDark = settingsViewModel.isDark;
 
@@ -36,7 +36,7 @@ class EcranSettings extends StatelessWidget {
                 SettingsTile.switchTile(
                   initialValue: isDark,
                   onToggle: (bool value) {
-                    // On met à jour le ViewModel
+                    /// On met à jour le ViewModel
                     settingsViewModel.isDark = value;
                   },
                   title: const Text("Night Mode"),
@@ -59,7 +59,7 @@ class EcranSettings extends StatelessWidget {
                   title: const Text("Archive"),
                   leading: const Icon(Icons.archive_outlined),
                   onPressed: (BuildContext context) {
-                    // On va à la page Archive
+                    /// On va à la page Archive
                     Navigator.push(
                       context,
                       MaterialPageRoute<void>(

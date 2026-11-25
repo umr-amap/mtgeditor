@@ -1,10 +1,9 @@
-import './mtg_scale.dart' ;
+import './mtg_scale.dart';
 import './mtg_attribute.dart';
 
 /// Représente un nœud d'un arbre MTG, avec sa relation hiérarchique et ses
 /// attributs.
 class MTGNode {
-
   String? _id;
   MTGScale? _scale;
   String? _connexion;
@@ -65,7 +64,7 @@ class MTGNode {
     this._descendants!.add(descendant);
 
     descendant.setParent(this);
-    if(connexion != null){
+    if (connexion != null) {
       descendant.setConnexion(connexion);
     }
   }
@@ -84,7 +83,7 @@ class MTGNode {
   /// Ajoute [attribute] à la map d'attributs avec une valeur nulle, si cette
   /// map a déjà été initialisée.
   void addAttribute(MTGAttribute attribute) {
-      this._attributes?[attribute]=null;
+    this._attributes?[attribute] = null;
   }
 
   /// Vérifie que le type déclaré de [attribute] correspond au type d'exécution
@@ -94,8 +93,8 @@ class MTGNode {
   void addvalue(MTGAttribute attribute,dynamic value){
     if(attribute.type!=value.runtimeType){
       throw FormatException("pas le bon type de valeur");
-    }else{
-      this._attributes?[attribute]=value;
+    } else {
+      this._attributes?[attribute] = value;
     }
   }
 
@@ -104,4 +103,10 @@ class MTGNode {
       this._attributes?.remove(attribute);
   }
 
+    /// Remplace la map complète des attributs du nœud.
+  void replaceAttributes(Map<MTGAttribute, dynamic>? value) {
+    _attributes = value == null
+        ? null
+        : Map<MTGAttribute, dynamic>.from(value);
+  }
 }

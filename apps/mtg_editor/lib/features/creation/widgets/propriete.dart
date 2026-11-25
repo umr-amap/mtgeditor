@@ -9,7 +9,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:mtg_editor/features/parametres/screens/mytheme.dart';
 
 class ProprieteView extends StatefulWidget {
-  final VoidCallback onContinue;
+  final ValueChanged<String> onContinue;
 
   const ProprieteView({super.key, required this.onContinue});
 
@@ -257,8 +257,7 @@ class _MyFormState extends State<ProprieteView> {
       return;
     }
 
-    debugPrint('Échelle de la plante: ${formState.value['typeEchelle']}');
-    widget.onContinue();
+    widget.onContinue((formState.value['id'] as String).trim());
   }
 
   LatLng _converterLatLng(String latitude, String longitude) {
@@ -356,6 +355,9 @@ class _MyFormState extends State<ProprieteView> {
                     labelText: 'Nom',
                     hintText: 'Nom de la plante',
                   ),
+                  validator: (value) => value == null || value.trim().isEmpty
+                      ? 'Le nom est obligatoire.'
+                      : null,
                 ),
                 const SizedBox(height: 8),
                 FormBuilderTextField(
